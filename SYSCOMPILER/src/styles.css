@@ -1,1 +1,36 @@
 /* You can add global styles to this file, and also import other style files */
+body{
+    background-image: url(assets\Imagenes\fondo.png);
+    background-position: center center;	  
+    background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  }
+button{
+ height: 50px;
+ width: 250px;
+ color: white;
+}
+h1{
+    color: whitesmoke;
+}
+td{
+    overflow: hidden;
+    width: 1400px;
+    text-overflow: Ellipsis;
+    white-space: nowrap;
+}
+table{
+    width: 100%;
+    table-layout: fixed;
+  }
+
+textarea {
+    overflow: hidden;
+    width: 900px;
+    height: 800px;
+    text-overflow: Ellipsis;
+    white-space: nowrap;
+    background-color:rgb(8, 3, 76);
+    color: whitesmoke;
+  }

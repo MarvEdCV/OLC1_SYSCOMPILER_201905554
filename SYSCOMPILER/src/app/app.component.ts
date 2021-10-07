@@ -1,6 +1,7 @@
 import { Component,ElementRef, OnInit, ViewChild } from '@angular/core';
 //import parser from './interpreter/grammar/grammar.js';
 import { Expresion } from './interpreter/Expresion/Expresion.js'; 
+import { saveAs } from 'file-saver';
 
 import * as ace from 'ace-builds'; // ace module ..
 import 'ace-builds/src-noconflict/ext-beautify';
@@ -46,13 +47,20 @@ export class AppComponent implements OnInit {
   AbrirExplorador(fileInput: any) {
     var contenido:string;
     const fileReaded = fileInput.target.files[0];
+    //Creamos un objeto tipo Filereader para leer el contenido
     var myReader:FileReader = new FileReader();
     myReader.onloadend = e => {
       contenido =<string> myReader.result;
+      //Insertamos el contenido en el editor
       this.codeEditor.setValue(contenido);
     }
     myReader.readAsText(fileReaded);
-
+  }
+  Save(){
+    var contenido:string;
+    contenido = this.codeEditor.getValue();
+      const blob = new Blob([contenido], {type: "text/plain;charset=utf-8"});
+      saveAs(blob, "File.sc");
   }
 
   ejecutar() {

@@ -19,8 +19,9 @@ export class AppComponent implements OnInit {
   codeEditorElmRef!: ElementRef;
   @ViewChild('network')
   el!: ElementRef;
-  private codeEditor!: ace.Ace.Editor;
+  public codeEditor!: ace.Ace.Editor;
   private editorBeautify:any;
+  
 
   ngOnInit(): void {
     this.editorBeautify = ace.require('ace/ext/beautify');
@@ -41,11 +42,25 @@ export class AppComponent implements OnInit {
     this.codeEditor.setShowFoldWidgets(true);
 
   }
+  
+  AbrirExplorador(fileInput: any) {
+    var contenido:string;
+    const fileReaded = fileInput.target.files[0];
+    var myReader:FileReader = new FileReader();
+    myReader.onloadend = e => {
+      contenido =<string> myReader.result;
+      this.codeEditor.setValue(contenido);
+    }
+    myReader.readAsText(fileReaded);
+
+  }
 
   ejecutar() {
     const entrada = this.codeEditor.getValue()
+   
     if (entrada == "") {
       alert("Entrada vacia")
+      this.codeEditor.setValue("Julio Pendejo");
       return
     }
   //const ast = parser.parse(entrada)

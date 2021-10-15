@@ -43,7 +43,9 @@ export class AppComponent implements OnInit {
     this.codeEditor.setShowFoldWidgets(true);
 
   }
-  
+  AddConsole(variable: any){
+    this.consolelog =this.consolelog +">"+ variable + "\n"
+  }
   AbrirExplorador(fileInput: any) {
     var contenido:string;
     const fileReaded = fileInput.target.files[0];
@@ -65,23 +67,22 @@ export class AppComponent implements OnInit {
 
   ejecutar() {
     const entrada = this.codeEditor?.getValue()
-    this.consolelog = this.consolelog + "Iniciando análisis \n"
+    this.AddConsole("Iniciando Análisis...")
     if (entrada == "") {
       alert("Entrada vacia")
       return
     } 
    const ast = parser.parse(entrada)
    console.log(ast)
-   //this.consolelog=this.consolelog + "\n"+  ast;
     try {
      console.log(ast.execute());
-     this.consolelog = this.consolelog + ast.execute().value+"\n";
+     this.AddConsole(ast.execute().value);
     } catch (error) {
       console.log(error)
     }
+    this.AddConsole("Analisis Finalizado... ");
+    console.log("Analisis Finalizado...")
 
-    console.log("Ejecucion terminada")
-   this.consolelog=this.consolelog + "Ejecucion terminada";
 
   }
 

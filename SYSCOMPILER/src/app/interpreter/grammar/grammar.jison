@@ -1,4 +1,5 @@
 %{
+    var {consolelog} = require('src/app/app.component.ts')
     const {Aritmetica,TipoAritmetica} = require('../Expresion/Aritmetica')
     const {Relacional,TipoRelacional} = require('../Expresion/Relacional')
     const {Literal,TipoLiteral} = require('../Expresion/Literal')
@@ -29,6 +30,7 @@
 [0-9]+\b				return 'ENTERO';
 ([a-zA-Z])[a-zA-Z0-9_]*	return 'IDENTIFICADOR';
 [A-Za-z]+["_"0-9A-Za-z]* return 'CADENA_COMILLAS';
+[A-Za-z]+['_'0-9A-Za-z]* return 'CADENA_COMILLAS_SIMPLES';
 
 "("                     return 'PAR_ABRE';
 ")"                     return 'PAR_CIERRA';
@@ -51,10 +53,10 @@
 ";"                     return 'PUNTO_Y_COMA';
 
 \"[^\"]*\"				{ yytext = yytext.substr(1,yyleng-2); return 'CADENA_COMILLAS'; }
-\'[^\']*\'				{ yytext = yytext.substr(1,yyleng-2); return 'CADENA_COMILLAS'; }
+\'[^\']*\'				{ yytext = yytext.substr(1,yyleng-2); return 'CADENA_COMILLAS_SIMPLES'; }
 <<EOF>>				    return 'EOF';
 .					   {console.log(yylloc.first_line, yylloc.first_column,'Lexico',yytext)
-                        }
+                        this.consolelog = consolelog + yylloc.first_line, yylloc.first_column,'Lexico',yytext}
 /lex
 
 
@@ -128,7 +130,8 @@ expresion
     |PAR_ABRE expresion PAR_CIERRA      {$$= $2}
 	|ENTERO	                            {$$= new Literal($1,TipoLiteral.INT, @1.first_line, @1.first_column)}
     |DECIMAL                            {$$= new Literal($1,TipoLiteral.DOUBLE, @1.first_line, @1.first_column)}							
-	|CADENA_COMILLAS                    {$$= new Literal($1,TipoLiteral.STRING, @1.first_line, @1.first_column)}        					
+	|CADENA_COMILLAS                    {$$= new Literal($1,TipoLiteral.STRING, @1.first_line, @1.first_column)}  
+    |CADENA_COMILLAS_SIMPLES      		{$$= new Literal($1,TipoLiteral.CHAR, @1.first_line, @1.first_column)}			
     |TRUE                               {$$= new Literal($1,TipoLiteral.BOOLEAN, @1.first_line, @1.first_column)}                              
     |FALSE                              {$$= new Literal($1,TipoLiteral.BOOLEAN, @1.first_line, @1.first_column)}
    // |IDENTIFICADOR                      {$$= new Acceso($1, @1.first_line, @1.first_column)}

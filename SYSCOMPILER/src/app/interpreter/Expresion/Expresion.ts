@@ -13,5 +13,5 @@ export abstract class Expresion {
 
     public tipoDominante(tipo1: Type, tipo2: Type): Type {
         return tipos[tipo1][tipo2];
-    }
+}
 }

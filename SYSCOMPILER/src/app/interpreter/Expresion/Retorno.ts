@@ -1,22 +1,28 @@
 export enum Type {
-    NUMBER = 0,
-    STRING = 1,
-    BOOLEAN = 2
+    INT = 0,
+    DOUBLE = 1,
+        BOOLEAN = 2,
+    CHAR = 3,
+    STRING = 4
 }
-
-export type Retorno = {
+export type Retorno={
     value: any,
-    type: Type
-}
+    type: Type}
 
-export const tipos = [
-    [   //Number, string, error, error
-        Type.NUMBER, Type.STRING, Type.NUMBER
+export const tipos   = [
+    [  
+        Type.INT,Type.DOUBLE, Type.INT,Type.INT,Type.STRING
     ],
-    [ //String, string, string, error
-        Type.STRING, Type.STRING, Type.STRING
+    [   
+        Type.DOUBLE, Type.DOUBLE, Type.DOUBLE, Type.DOUBLE, Type.STRING
     ],
-    [ //error, string, bool, error, 
-        Type.NUMBER, Type.STRING, Type.NUMBER
+    [ 
+        Type.INT, Type.DOUBLE,Type.STRING/*pendiente de revisar*/,Type.STRING/*pendiente de revisar*/,Type.STRING
+    ],
+    [ 
+        Type.INT, Type.DOUBLE,Type.STRING/*pendiente de revisar*/,Type.STRING,Type.STRING
+    ],
+    [ 
+        Type.STRING, Type.STRING,Type.STRING,Type.STRING,Type.STRING
     ]
 ];

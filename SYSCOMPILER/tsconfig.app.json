@@ -10,6 +10,9 @@
     "src/polyfills.ts"
   ],
   "include": [
-    "src/**/*.d.ts"
+    "src/**/*.d.ts",
+    "src/app/interpreter/Expresion/**/*.ts",
+    "src/app/interpeter/Expresion/Logica.ts",
+    "src/app/interpreter/Error/**/*.ts",
   ]
 }

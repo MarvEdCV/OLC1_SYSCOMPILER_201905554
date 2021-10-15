@@ -1,12 +1,12 @@
 import { Component,ElementRef, OnInit, ViewChild } from '@angular/core';
-//import parser from './interpreter/grammar/grammar.js';
-import { Expresion } from './interpreter/Expresion/Expresion.js'; 
+
+import {parser} from './interpreter/grammar/grammar.js';
 import { saveAs } from 'file-saver';
 
 import * as ace from 'ace-builds'; // ace module ..
 import 'ace-builds/src-noconflict/ext-beautify';
 import 'ace-builds/src-noconflict/mode-typescript';
-import 'ace-builds/src-noconflict/theme-tomorrow_night_eighties';
+import 'ace-builds/src-noconflict/theme-tomorrow_night_eighties'; 
 const THEME = 'ace/theme/tomorrow_night_eighties';
 const LANG = 'ace/mode/typescript';
 
@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
   el!: ElementRef;
   public codeEditor!: ace.Ace.Editor;
   private editorBeautify:any;
-  
+  public consolelog = "";
 
   ngOnInit(): void {
     this.editorBeautify = ace.require('ace/ext/beautify');
@@ -64,22 +64,24 @@ export class AppComponent implements OnInit {
   }
 
   ejecutar() {
-    const entrada = this.codeEditor.getValue()
-   
+    const entrada = this.codeEditor?.getValue()
+    this.consolelog = this.consolelog + "Iniciando análisis \n"
     if (entrada == "") {
       alert("Entrada vacia")
-      this.codeEditor.setValue("Julio Pendejo");
       return
-    }
-  //const ast = parser.parse(entrada)
-   //console.log(ast)
+    } 
+   const ast = parser.parse(entrada)
+   console.log(ast)
+   //this.consolelog=this.consolelog + "\n"+  ast;
     try {
-    //console.log(ast.execute());
+     console.log(ast.execute());
+     this.consolelog = this.consolelog + ast.execute().value+"\n";
     } catch (error) {
       console.log(error)
     }
 
     console.log("Ejecucion terminada")
+   this.consolelog=this.consolelog + "Ejecucion terminada";
 
   }
 

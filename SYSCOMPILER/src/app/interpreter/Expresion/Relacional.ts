@@ -1,6 +1,6 @@
 import { Expresion } from "./Expresion";
 import { Type,Retorno} from "./Retorno";
-import { Error_ } from '../Error/Error';
+import { Error } from '../Error/Error';
 //import { Ambito } from "../Ambito/Ambito";
 export class Relacional extends Expresion {
 

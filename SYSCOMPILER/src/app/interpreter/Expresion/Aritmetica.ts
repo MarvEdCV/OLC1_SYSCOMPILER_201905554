@@ -1,6 +1,6 @@
 import { Expresion } from "./Expresion";
 import { Retorno, Type } from "./Retorno"
-import { Error_ } from "../Error/Error";
+import { Error } from "../Error/Error";
 //import { Ambito } from "../Extra/Ambito";
 
 export class Aritmetica extends Expresion {
@@ -21,13 +21,13 @@ export class Aritmetica extends Expresion {
             } else if (dominante == Type.DOUBLE) {
                 return { value: (leftValue.value + rightValue.value), type: Type.DOUBLE};
             } else {
-                throw new Error_(this.line, this.column, 'Semantico', 'No se puede operar: ' + leftValue.type + ' _ ' + rightValue.type);
+                throw new Error(this.line, this.column, 'Semantico', 'No se puede operar: ' + leftValue.type + ' _ ' + rightValue.type);
             }
         } else if (this.tipo == TipoAritmetica.RESTA) {
             if (dominante == Type.DOUBLE) {
                 return { value: (leftValue.value - rightValue.value), type: Type.DOUBLE };
             } else {
-                throw new Error_(this.line, this.column, 'Semantico', 'No se puede operar: ' + leftValue.type + ' _ ' + rightValue.type);
+                throw new Error(this.line, this.column, 'Semantico', 'No se puede operar: ' + leftValue.type + ' _ ' + rightValue.type);
             }
         }
         else if (this.tipo == TipoAritmetica.MULTIPLICACION) {
@@ -35,21 +35,21 @@ export class Aritmetica extends Expresion {
                 if (leftValue.type != Type.BOOLEAN || rightValue.type != Type.BOOLEAN) {
                     return { value: (leftValue.value * rightValue.value), type: Type.DOUBLE };
                 }
-                throw new Error_(this.line, this.column, 'Semantico', 'No se puede operar: ' + leftValue.type + ' _ ' + rightValue.type);
+                throw new Error(this.line, this.column, 'Semantico', 'No se puede operar: ' + leftValue.type + ' _ ' + rightValue.type);
             } else {
-                throw new Error_(this.line, this.column, 'Semantico', 'No se puede operar: ' + leftValue.type + ' _ ' + rightValue.type);
+                throw new Error(this.line, this.column, 'Semantico', 'No se puede operar: ' + leftValue.type + ' _ ' + rightValue.type);
             }
         }
         else if (this.tipo == TipoAritmetica.DIVISION) {
             if (dominante == Type.DOUBLE) {
                 if (rightValue.value == 0) {
-                    throw new Error_(this.line, this.column, "Semantico", "No se puede dividir entre 0");
+                    throw new Error(this.line, this.column, "Semantico", "No se puede dividir entre 0");
                 } else {
                     return { value: (leftValue.value / rightValue.value), type: Type.DOUBLE };
                     //TODO HOLA AJSDFJASER
                 }
             } else {
-                throw new Error_(this.line, this.column, 'Semantico', 'No se puede operar: ' + leftValue.type + ' _ ' + rightValue.type);
+                throw new Error(this.line, this.column, 'Semantico', 'No se puede operar: ' + leftValue.type + ' _ ' + rightValue.type);
             }
         }
         return {value: null, type: Type.BOOLEAN}

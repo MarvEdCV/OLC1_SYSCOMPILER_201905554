@@ -4,7 +4,9 @@
     const {Relacional,TipoRelacional} = require('../Expresion/Relacional')
     const {Literal,TipoLiteral} = require('../Expresion/Literal')
     const {Logica,TipoLogica} = require('../Expresion/Logica')
-    //const {Acceso} = require('../Expresion/Acceso')
+    const error_1 = require('../Error/Error')
+    const listaErrores = require('../Error/ListaErrores')
+        //const {Acceso} = require('../Expresion/Acceso')
     //const {Declaracion} = require('../Instruccion/Declaracion')
     //const {Print} = require('../Instruccion/Print')
 %}
@@ -55,8 +57,12 @@
 \"[^\"]*\"				{ yytext = yytext.substr(1,yyleng-2); return 'CADENA_COMILLAS'; }
 \'[^\']*\'				{ yytext = yytext.substr(1,yyleng-2); return 'CADENA_COMILLAS_SIMPLES'; }
 <<EOF>>				    return 'EOF';
-.					   {console.log(yylloc.first_line, yylloc.first_column,'Lexico',yytext)
-                        this.consolelog = consolelog + yylloc.first_line, yylloc.first_column,'Lexico',yytext}
+.					    {
+                        const er = new error_1.Error(yylloc.first_line,yylloc.first_column,"Léxico",yytext);
+                        listaErrores.ListaErrores.getInstance().push(er);                       
+                        }
+ /*{console.error(yylloc.first_line, yylloc.first_column,'Lexico',yytext)
+                        this.consolelog = consolelog + yylloc.first_line, yylloc.first_column,'Lexico',yytext}*/
 /lex
 
 

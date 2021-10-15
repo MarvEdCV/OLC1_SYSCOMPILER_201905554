@@ -1,6 +1,6 @@
 import { Expresion } from "./Expresion";
 import { Retorno, Type } from "./Retorno";
-import { Error_ } from '../Error/Error';
+import { Error } from '../Error/Error';
 //import { Ambito } from "../Ambito/Ambito";
 export class Relacional extends Expresion {
 
@@ -21,9 +21,9 @@ export class Relacional extends Expresion {
                 if (rightValue.type === Type.BOOLEAN) {
                     return { value: (leftValue.value && rightValue.value), type: Type.BOOLEAN }
                 }
-                throw new Error_(this.line, this.column, 'Semantico', 'No se pueden operar estos tipos')
+                throw new Error(this.line, this.column, 'Semantico', 'No se pueden operar estos tipos')
             }
-            throw new Error_(this.line, this.column, 'Semantico', 'No se pueden operar estos tipos')
+            throw new Error(this.line, this.column, 'Semantico', 'No se pueden operar estos tipos')
         } else if (this.tipo == TipoLogica.OR) {
             return { value: (leftValue.value || rightValue.value), type: Type.BOOLEAN }
         }

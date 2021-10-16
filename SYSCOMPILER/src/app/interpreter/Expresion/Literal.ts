@@ -1,4 +1,4 @@
-//import { Ambito } from "../Ambito/Ambito";
+import { Ambito } from "../Ambito/Ambito";
 import { Expresion } from "./Expresion";
 import { Retorno, Type } from './Retorno';
 export class Literal extends Expresion {
@@ -6,7 +6,7 @@ export class Literal extends Expresion {
     constructor(private value: any, private tipo: TipoLiteral, line: number, column: number) {
         super(line, column);
     }
-    public execute(): Retorno {
+    public execute(ambito:Ambito): Retorno {
         if (this.tipo == 0) {
             return { value: Number(this.value), type: Type.INT };
         } else if (this.tipo == 1) {

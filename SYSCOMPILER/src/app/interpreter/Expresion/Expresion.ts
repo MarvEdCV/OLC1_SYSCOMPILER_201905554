@@ -1,5 +1,5 @@
 import { tipos, Type, Retorno } from "./Retorno"
-
+import { Ambito } from "../Ambito/Ambito";
 export abstract class Expresion {
     public line: number;
     public column: number;
@@ -8,7 +8,7 @@ export abstract class Expresion {
         this.column = column
     }
 
-    public abstract execute(): Retorno;
+    public abstract execute(ambito:Ambito): Retorno;
 
 
     public tipoDominante(tipo1: Type, tipo2: Type): Type {

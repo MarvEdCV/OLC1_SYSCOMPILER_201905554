@@ -1,14 +1,14 @@
 import { Expresion } from "./Expresion";
 import { Retorno, Type } from "./Retorno";
 import { Error } from '../Error/Error';
-//import { Ambito } from "../Ambito/Ambito";
+import { Ambito } from "../Ambito/Ambito";
 export class Relacional extends Expresion {
 
     constructor(private left: Expresion, private right: Expresion, private tipo: TipoLogica, line: number, column: number) {
         super(line, column);
     }
-    public execute(): Retorno {
-        const leftValue = this.left.execute();
+    public execute(ambito:Ambito): Retorno {
+        const leftValue = this.left.execute(ambito);
         let rightValue
         if (this.right != null) {
         }
@@ -17,7 +17,7 @@ export class Relacional extends Expresion {
             return { value: !(leftValue.value), type: Type.BOOLEAN }
         } else if (this.tipo == TipoLogica.AND) {
             if (leftValue.value == Type.BOOLEAN) {
-                const rightValue = this.right.execute();
+                const rightValue = this.right.execute(ambito);
                 if (rightValue.type === Type.BOOLEAN) {
                     return { value: (leftValue.value && rightValue.value), type: Type.BOOLEAN }
                 }

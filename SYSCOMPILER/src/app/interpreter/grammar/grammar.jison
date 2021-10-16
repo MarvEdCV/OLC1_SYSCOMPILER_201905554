@@ -61,8 +61,6 @@
                         const er = new error_1.Error(yylloc.first_line,yylloc.first_column,"Léxico",yytext);
                         listaErrores.ListaErrores.getInstance().push(er);                       
                         }
- /*{console.error(yylloc.first_line, yylloc.first_column,'Lexico',yytext)
-                        this.consolelog = consolelog + yylloc.first_line, yylloc.first_column,'Lexico',yytext}*/
 /lex
 
 

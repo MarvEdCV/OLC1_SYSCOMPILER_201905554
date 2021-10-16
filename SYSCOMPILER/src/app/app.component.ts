@@ -2,11 +2,12 @@ import { Component,ElementRef, OnInit, ViewChild } from '@angular/core';
 
 import {parser} from './interpreter/grammar/grammar.js';
 import { saveAs } from 'file-saver';
-
+import { WriteLine,valadre } from './interpreter/Instruccion/WriteLine';
 import * as ace from 'ace-builds'; // ace module ..
 import 'ace-builds/src-noconflict/ext-beautify';
 import 'ace-builds/src-noconflict/mode-typescript';
 import 'ace-builds/src-noconflict/theme-tomorrow_night_eighties'; 
+import { Ambito } from './interpreter/Ambito/Ambito';
 const THEME = 'ace/theme/tomorrow_night_eighties';
 const LANG = 'ace/mode/typescript';
 
@@ -22,7 +23,7 @@ export class AppComponent implements OnInit {
   el!: ElementRef;
   public codeEditor!: ace.Ace.Editor;
   private editorBeautify:any;
-  public consolelog = "";
+  consolelog = "";
 
   ngOnInit(): void {
     this.editorBeautify = ace.require('ace/ext/beautify');
@@ -67,7 +68,8 @@ export class AppComponent implements OnInit {
 
   ejecutar() {
     const entrada = this.codeEditor?.getValue()
-    this.AddConsole("Iniciando Análisis...")
+    console.log("Iniciando Análisis...")
+    this.AddConsole("Iniciando Análisis...");
     if (entrada == "") {
       alert("Entrada vacia")
       return
@@ -75,8 +77,13 @@ export class AppComponent implements OnInit {
    const ast = parser.parse(entrada)
    console.log(ast)
     try {
-     console.log(ast.execute());
-     this.AddConsole(ast.execute().value);
+    const ambito = new Ambito(null);
+    for(const inst of ast){
+      inst.execute(ambito);
+      this.consolelog = this.consolelog +">"+ valadre;
+    }
+     //console.log(ast.execute());
+     //this.AddConsole(ast.execute().value);
     } catch (error) {
       console.log(error)
     }

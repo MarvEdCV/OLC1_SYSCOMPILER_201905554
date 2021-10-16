@@ -14,5 +14,6 @@
     "src/app/interpreter/Expresion/**/*.ts",
     "src/app/interpeter/Expresion/Logica.ts",
     "src/app/interpreter/Error/**/*.ts",
+    "src/app/interpreter/Instruccion/**/*.ts"
   ]
 }

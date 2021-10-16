@@ -1,19 +1,18 @@
 %{
-    var {consolelog} = require('src/app/app.component.ts')
     const {Aritmetica,TipoAritmetica} = require('../Expresion/Aritmetica')
     const {Relacional,TipoRelacional} = require('../Expresion/Relacional')
     const {Literal,TipoLiteral} = require('../Expresion/Literal')
     const {Logica,TipoLogica} = require('../Expresion/Logica')
     const error_1 = require('../Error/Error')
     const listaErrores = require('../Error/ListaErrores')
-        //const {Acceso} = require('../Expresion/Acceso')
+    const {Acceso} = require('../Expresion/AccesoAmbito')
     //const {Declaracion} = require('../Instruccion/Declaracion')
-    //const {Print} = require('../Instruccion/Print')
+    const {WriteLine} = require('../Instruccion/WriteLine')
 %}
 
 %lex
 
-%options case-sensitive
+%options case-insensitive
 
 %%
 
@@ -25,7 +24,7 @@
 
 "true"                  return 'TRUE';
 "false"                 return 'FALSE';
-"print"                 return 'PRINT';
+"writeline"             return 'WRITELINE';
 
 //'dijofdjf'+${}'
 [0-9]+("."[0-9]+)?\b  	return 'DECIMAL';
@@ -34,7 +33,7 @@
 [A-Za-z]+["_"0-9A-Za-z]* return 'CADENA_COMILLAS';
 [A-Za-z]+['_'0-9A-Za-z]* return 'CADENA_COMILLAS_SIMPLES';
 
-"("                     return 'PAR_ABRE';
+"("                     return 'PAR_ABRE';                   
 ")"                     return 'PAR_CIERRA';
 
 //logicos
@@ -81,11 +80,11 @@
 %% 
 
 ini
-	: expresion EOF{
+	: instrucciones EOF{
 		return $1;
 	}
 ;
-/*
+
 instrucciones
     :instrucciones inicio 
         { $1.push($2); $$ = $1; }
@@ -95,18 +94,17 @@ instrucciones
 
 
 inicio
-    :declaracion
-    |print
+    :writeline
 ;
-
+/*
 declaracion 
     : IDENTIFICADOR IGUAL expresion PUNTO_Y_COMA 
         {$$ = new Declaracion($1,$3,@1.first_line, @1.first_column)}
-;
+;*/
 
-print
-    :PRINT PAR_ABRE ListaExpr PAR_CIERRA PUNTO_Y_COMA 
-        {$$ = new Print($3,@1.first_line, @1.first_column)}
+writeline
+    :WRITELINE PAR_ABRE ListaExpr PAR_CIERRA PUNTO_Y_COMA 
+        {$$ = new WriteLine($3,@1.first_line, @1.first_column)}
 ;
 
 ListaExpr 
@@ -118,7 +116,7 @@ ListaExpr
 
 
 //EXPRESION
-*/
+
 expresion
     :MENOS expresion %prec UMENOS		{$$= new Aritmetica($2,new Literal("-1",TipoLiteral.DOUBLE, @1.first_line, @1.first_column),TipoAritmetica.MULTIPLICACION, @1.first_line, @1.first_column)}
     |expresion MAS expresion            {$$= new Aritmetica($1,$3,TipoAritmetica.SUMA, @1.first_line, @1.first_column)} 
@@ -138,5 +136,5 @@ expresion
     |CADENA_COMILLAS_SIMPLES      		{$$= new Literal($1,TipoLiteral.CHAR, @1.first_line, @1.first_column)}			
     |TRUE                               {$$= new Literal($1,TipoLiteral.BOOLEAN, @1.first_line, @1.first_column)}                              
     |FALSE                              {$$= new Literal($1,TipoLiteral.BOOLEAN, @1.first_line, @1.first_column)}
-   // |IDENTIFICADOR                      {$$= new Acceso($1, @1.first_line, @1.first_column)}
+    |IDENTIFICADOR                      {$$= new Acceso($1, @1.first_line, @1.first_column)}
 ;

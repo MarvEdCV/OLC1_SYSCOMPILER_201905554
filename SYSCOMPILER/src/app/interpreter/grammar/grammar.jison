@@ -5,8 +5,8 @@
     const {Logica,TipoLogica} = require('../Expresion/Logica')
     const error_1 = require('../Error/Error')
     const listaErrores = require('../Error/ListaErrores')
-    const {Acceso} = require('../Expresion/AccesoAmbito')
-    //const {Declaracion} = require('../Instruccion/Declaracion')
+    const {AccesoAmbito} = require('../Expresion/AccesoAmbito')
+    const {Declaracion} = require('../Instruccion/Declaracion')
     const {WriteLine} = require('../Instruccion/WriteLine')
 %}
 
@@ -25,6 +25,12 @@
 "true"                  return 'TRUE';
 "false"                 return 'FALSE';
 "writeline"             return 'WRITELINE';
+"string"                return 'STRING';
+"int"                   return 'INT';
+"double"                return 'DOUBLE';
+"boolean"               return 'BOOLEAN';
+"double"                return 'DOUBLE';
+
 
 //'dijofdjf'+${}'
 [0-9]+("."[0-9]+)?\b  	return 'DECIMAL';
@@ -53,8 +59,8 @@
 "="                     return 'IGUAL';
 ";"                     return 'PUNTO_Y_COMA';
 
-\"[^\"]*\"				{ yytext = yytext.substr(1,yyleng-2); return 'CADENA_COMILLAS'; }
-\'[^\']*\'				{ yytext = yytext.substr(1,yyleng-2); return 'CADENA_COMILLAS_SIMPLES'; }
+\"[^\"]*\"				{ yytext = yytext.substr(1,yyleng-2); return 'CADENA_COMILLAS';}
+\'[^\']*\'				{ yytext = yytext.substr(1,yyleng-2); return 'CADENA_COMILLAS_SIMPLES';}
 <<EOF>>				    return 'EOF';
 .					    {
                         const er = new error_1.Error(yylloc.first_line,yylloc.first_column,"Léxico",yytext);
@@ -95,12 +101,13 @@ instrucciones
 
 inicio
     :writeline
+    |declaracion
 ;
-/*
+
 declaracion 
-    : IDENTIFICADOR IGUAL expresion PUNTO_Y_COMA 
-        {$$ = new Declaracion($1,$3,@1.first_line, @1.first_column)}
-;*/
+    : tiposDatos IDENTIFICADOR IGUAL expresion PUNTO_Y_COMA 
+        {$$ = new Declaracion($2,$4,@1.first_line, @1.first_column)}
+;
 
 writeline
     :WRITELINE PAR_ABRE ListaExpr PAR_CIERRA PUNTO_Y_COMA 
@@ -113,7 +120,13 @@ ListaExpr
     | expresion
         {$$ = [$1];}
 ;
-
+tiposDatos:
+    STRING
+    |INT
+    |DOUBLE
+    |BOOLEAN
+    |CHAR
+;
 
 //EXPRESION
 
@@ -136,5 +149,5 @@ expresion
     |CADENA_COMILLAS_SIMPLES      		{$$= new Literal($1,TipoLiteral.CHAR, @1.first_line, @1.first_column)}			
     |TRUE                               {$$= new Literal($1,TipoLiteral.BOOLEAN, @1.first_line, @1.first_column)}                              
     |FALSE                              {$$= new Literal($1,TipoLiteral.BOOLEAN, @1.first_line, @1.first_column)}
-    |IDENTIFICADOR                      {$$= new Acceso($1, @1.first_line, @1.first_column)}
+    |IDENTIFICADOR                      {$$= new AccesoAmbito($1, @1.first_line, @1.first_column)}
 ;

@@ -1,4 +1,4 @@
-import { tipos, Type, Retorno } from "./Retorno"
+import { tiposuma, Type, Retorno } from "./Retorno"
 import { Ambito } from "../Ambito/Ambito";
 export abstract class Expresion {
     public line: number;
@@ -11,7 +11,7 @@ export abstract class Expresion {
     public abstract execute(ambito:Ambito): Retorno;
 
 
-    public tipoDominante(tipo1: Type, tipo2: Type): Type {
-        return tipos[tipo1][tipo2];
+    public tipoDominanteSuma(tipo1: Type, tipo2: Type): Type {
+        return tiposuma[tipo1][tipo2];
 }
 }

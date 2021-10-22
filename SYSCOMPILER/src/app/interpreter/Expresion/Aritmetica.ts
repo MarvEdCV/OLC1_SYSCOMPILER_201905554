@@ -14,8 +14,8 @@ export class Aritmetica extends Expresion {
 
         const rightValue = this.right.execute(ambito);
 
-        let dominante = this.tipoDominante(leftValue.type, rightValue.type);
         if (this.tipo == TipoAritmetica.SUMA) {
+            let dominante = this.tipoDominanteSuma(leftValue.type, rightValue.type);
             if (dominante == Type.STRING) {
                 return { value: (leftValue.value.toString() + rightValue.value.toString()), type: Type.STRING };
             } else if (dominante == Type.DOUBLE) {
@@ -24,6 +24,7 @@ export class Aritmetica extends Expresion {
                 throw new Error(this.line, this.column, 'Semantico', 'No se puede operar: ' + leftValue.type + ' _ ' + rightValue.type);
             }
         } else if (this.tipo == TipoAritmetica.RESTA) {
+            let dominante = this.tipoDominanteSuma(leftValue.type, rightValue.type);//CAMBIAR
             if (dominante == Type.DOUBLE) {
                 return { value: (leftValue.value - rightValue.value), type: Type.DOUBLE };
             } else {
@@ -31,6 +32,7 @@ export class Aritmetica extends Expresion {
             }
         }
         else if (this.tipo == TipoAritmetica.MULTIPLICACION) {
+            let dominante = this.tipoDominanteSuma(leftValue.type, rightValue.type);//CAMBIAR
             if (dominante == Type.DOUBLE) {
                 if (leftValue.type != Type.BOOLEAN || rightValue.type != Type.BOOLEAN) {
                     return { value: (leftValue.value * rightValue.value), type: Type.DOUBLE };
@@ -41,6 +43,7 @@ export class Aritmetica extends Expresion {
             }
         }
         else if (this.tipo == TipoAritmetica.DIVISION) {
+            let dominante = this.tipoDominanteSuma(leftValue.type, rightValue.type);//CAMBIAR
             if (dominante == Type.DOUBLE) {
                 if (rightValue.value == 0) {
                     throw new Error(this.line, this.column, "Semantico", "No se puede dividir entre 0");

@@ -3,7 +3,7 @@ import { Type } from "../Expresion/Retorno";
 import { Simbolo } from "./Simbolo"
 
 export class Ambito {
-    private variables: Map<string, Simbolo>
+    public variables: Map<string, Simbolo>
 
     constructor(public anterior: Ambito | null) {
         this.variables = new Map();
@@ -20,7 +20,7 @@ export class Ambito {
             }
             env = env.anterior
         }
-        this.variables.set(id, new Simbolo(value, id, type))
+        this.variables.set(id, new Simbolo(id,type,value))
     }
 
     public getVal(id: string): Simbolo|null|undefined {

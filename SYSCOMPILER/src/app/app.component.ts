@@ -1,8 +1,8 @@
 import { Component,ElementRef, OnInit, ViewChild } from '@angular/core';
-
+import { MensajeError } from './interpreter/Error/Error';
 import {parser} from './interpreter/grammar/grammar.js';
 import { saveAs } from 'file-saver';
-import { WriteLine,valadre } from './interpreter/Instruccion/WriteLine';
+import { textPrint } from './interpreter/Instruccion/WriteLine';
 import * as ace from 'ace-builds'; // ace module ..
 import 'ace-builds/src-noconflict/ext-beautify';
 import 'ace-builds/src-noconflict/mode-typescript';
@@ -45,7 +45,9 @@ export class AppComponent implements OnInit {
 
   }
   AddConsole(variable: any){
-    this.consolelog =this.consolelog +">"+ variable + "\n"
+    if (variable!=null){
+      this.consolelog =this.consolelog +">"+ variable + "\n"
+    }
   }
   AbrirExplorador(fileInput: any) {
     var contenido:string;
@@ -80,17 +82,15 @@ export class AppComponent implements OnInit {
     const ambito = new Ambito(null);
     for(const inst of ast){
       inst.execute(ambito);
-      this.consolelog = this.consolelog +">"+ valadre;
+      this.AddConsole(textPrint);
+      
     }
-     //console.log(ast.execute());
-     //this.AddConsole(ast.execute().value);
     } catch (error) {
       console.log(error)
     }
+    this.AddConsole(MensajeError);
     this.AddConsole("Analisis Finalizado... ");
     console.log("Analisis Finalizado...")
-
-
   }
 
 }

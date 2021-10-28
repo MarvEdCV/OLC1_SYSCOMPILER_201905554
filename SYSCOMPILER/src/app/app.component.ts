@@ -89,8 +89,8 @@ export class AppComponent implements OnInit {
       console.log(error)
     }
     this.AddConsole(MensajeError);
-    this.AddConsole("Analisis Finalizado... ");
-    console.log("Analisis Finalizado...")
+    this.AddConsole("Análisis Finalizado... ");
+    console.log("Análisis Finalizado...")
   }
 
 }

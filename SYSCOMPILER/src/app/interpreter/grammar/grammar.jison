@@ -29,7 +29,7 @@
 "int"                   return 'INT';
 "double"                return 'DOUBLE';
 "boolean"               return 'BOOLEAN';
-"double"                return 'DOUBLE';
+"char"                return 'CHAR';
 
 
 //'dijofdjf'+${}'

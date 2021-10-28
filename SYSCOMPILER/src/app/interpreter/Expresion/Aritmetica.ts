@@ -36,7 +36,7 @@ export class Aritmetica extends Expresion {
                     return{value:(leftValue.value.charCodeAt()-rightValue.value),type: Type.DOUBLE}
                 }
                 else if(rightValue.type==Type.CHAR){
-                    return{value:(rightValue.value.charCodeAt()-leftValue.value),type: Type.DOUBLE}
+                    return{value:(leftValue.value-rightValue.value.charCodeAt()),type: Type.DOUBLE}
                 }
                 return { value: (leftValue.value - rightValue.value), type: Type.DOUBLE };
             } else {
@@ -73,7 +73,7 @@ export class Aritmetica extends Expresion {
                     return{value:(leftValue.value.charCodeAt()/rightValue.value),type: Type.DOUBLE}
                 }
                 else if(rightValue.type==Type.CHAR){
-                    return{value:(rightValue.value.charCodeAt()/leftValue.value),type: Type.DOUBLE}
+                    return{value:(leftValue.value/rightValue.value.charCodeAt()),type: Type.DOUBLE}
                 }else {
                     return { value: (leftValue.value / rightValue.value), type: Type.DOUBLE };
                 }

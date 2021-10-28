@@ -11,7 +11,7 @@ export abstract class Expresion {
     public abstract execute(ambito:Ambito): Retorno;
 
 
-    public tipoDominanteSuma(tipo1: Type, tipo2: Type): Type {
+public tipoDominanteSuma(tipo1: Type, tipo2: Type): Type {
         return tiposuma[tipo1][tipo2];
 }
 public tipoDominanteResta(tipo1: Type, tipo2: Type): Type {

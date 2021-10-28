@@ -36,8 +36,8 @@ WriteLine(f+b);//string+6=string6
 Sumas Con BOOLEAN
 */
 WriteLine("--ESPACIOOOOO--");
-WriteLine(a+c);//5+true=11
-WriteLine(b+c);//6+true=12
+WriteLine(a+c);//5+true=6
+WriteLine(b+c);//6+true=7
 //WriteLine(c+c);//true+true=ERROR
 //WriteLine(e+c);//97+true=ERROR
 WriteLine(f+c);//string+true=stringtrue
@@ -71,7 +71,7 @@ Restas Con enteros
 WriteLine("--ESPACIOOOOO--");
 WriteLine(a-a);//5-5=0
 WriteLine(b-a);//6-5=1
-WriteLine(c-a);//true-5=-5
+WriteLine(c-a);//true-5=-4
 WriteLine(e-a);//97-5=92
 //WriteLine(f-a);//string-5=ERROR
 /*

@@ -56,6 +56,8 @@
 "-"					    return 'MENOS';
 "*"					    return 'POR';
 "/"					    return 'DIVIDIR';
+"^"					    return 'ELEVAR';
+"%"					    return 'MODULO';
 "="                     return 'IGUAL';
 ";"                     return 'PUNTO_Y_COMA';
 
@@ -75,9 +77,11 @@
 %left 'DIFERENTE' 'D_IGUAL'
 %left 'MENOR_IGUAL' 'MAYOR_IGUAL' 'MENOR' 'MAYOR'
 %left 'MAS' 'MENOS' 
-%left 'POR' 'DIVIDIR'
+%left 'POR' 'DIVIDIR' 'MODULO'
+%left 'ELEVAR'  
 %left UMENOS
-%right 'NOT' 
+%right 'NOT'
+%right 'UNARIA' 
 
 
 
@@ -135,7 +139,10 @@ expresion
     |expresion MAS expresion            {$$= new Aritmetica($1,$3,TipoAritmetica.SUMA, @1.first_line, @1.first_column)} 
     |expresion MENOS expresion          {$$= new Aritmetica($1,$3,TipoAritmetica.RESTA, @1.first_line, @1.first_column)} 
     |expresion POR expresion            {$$= new Aritmetica($1,$3,TipoAritmetica.MULTIPLICACION, @1.first_line, @1.first_column)}   
-    |expresion DIVIDIR expresion        {$$= new Aritmetica($1,$3,TipoAritmetica.DIVISION, @1.first_line, @1.first_column)} 
+    |expresion DIVIDIR expresion        {$$= new Aritmetica($1,$3,TipoAritmetica.DIVISION, @1.first_line, @1.first_column)}
+    |expresion ELEVAR expresion         {$$= new Aritmetica($1,$3,TipoAritmetica.POTENCIA, @1.first_line, @1.first_column)}
+    |expresion MODULO expresion         {$$= new Aritmetica($1,$3,TipoAritmetica.MODULO, @1.first_line, @1.first_column)} 
+    //|MENOS expresion %prec UNARIA       {$$= new Aritmetica(new Literal("-1",TipoLiteral.DOUBLE, @1.first_line, @1.first_column),$2,TipoAritmetica.NEGACIONUNARIA, @1.first_line, @1.first_column)}
     |expresion D_IGUAL expresion        {$$= new Relacional($1,$3,TipoRelacional.IGUALIGUAL, @1.first_line, @1.first_column)} 
     |expresion DIFERENTE expresion      {$$= new Relacional($1,$3,TipoRelacional.DIFERENTE, @1.first_line, @1.first_column)} 
     |expresion MAYOR_IGUAL expresion    {$$= new Relacional($1,$3,TipoRelacional.MAYOR_IGUAL, @1.first_line, @1.first_column)} 

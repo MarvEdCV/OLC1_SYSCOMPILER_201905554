@@ -50,10 +50,10 @@ export class Aritmetica extends Expresion {
                 if (leftValue.type != Type.BOOLEAN || rightValue.type != Type.BOOLEAN) {
                     //Validacion para operacion char con double
                  if(leftValue.type==Type.CHAR){
-                    return{value:(leftValue.value.charCodeAt()-rightValue.value),type: Type.DOUBLE}
+                    return{value:(leftValue.value.charCodeAt()*rightValue.value),type: Type.DOUBLE}
                 }
                 else if(rightValue.type==Type.CHAR){
-                    return{value:(rightValue.value.charCodeAt()-leftValue.value),type: Type.DOUBLE}
+                    return{value:(rightValue.value.charCodeAt()*leftValue.value),type: Type.DOUBLE}
                 }else{
                     return { value: (leftValue.value * rightValue.value), type: Type.DOUBLE };
                 }
@@ -70,10 +70,10 @@ export class Aritmetica extends Expresion {
                     throw new Error(this.line, this.column, "Semantico", "No se puede dividir entre 0");
                 } //Validacion para operacion char con double
                 if(leftValue.type==Type.CHAR){
-                    return{value:(leftValue.value.charCodeAt()-rightValue.value),type: Type.DOUBLE}
+                    return{value:(leftValue.value.charCodeAt()/rightValue.value),type: Type.DOUBLE}
                 }
                 else if(rightValue.type==Type.CHAR){
-                    return{value:(rightValue.value.charCodeAt()-leftValue.value),type: Type.DOUBLE}
+                    return{value:(rightValue.value.charCodeAt()/leftValue.value),type: Type.DOUBLE}
                 }else {
                     return { value: (leftValue.value / rightValue.value), type: Type.DOUBLE };
                 }
@@ -81,7 +81,34 @@ export class Aritmetica extends Expresion {
                 throw new Error(this.line, this.column, 'Semantico', 'No se puede operar: ' + leftValue.type + ' CON ' + rightValue.type);
             }
         }
-        return {value: null, type: Type.BOOLEAN}
+        else if (this.tipo == TipoAritmetica.POTENCIA){
+            let dominante = this.tipoDominantePotencia(leftValue.type,rightValue.type);
+            if(dominante == Type.DOUBLE){
+                if (leftValue.type != Type.BOOLEAN || rightValue.type != Type.BOOLEAN) {
+                    return { value: (Math.pow(leftValue.value, rightValue.value)), type: Type.DOUBLE };
+                }
+            }else{
+                throw new Error(this.line, this.column, 'Semantico', 'No se puede operar: ' + leftValue.type + ' CON ' + rightValue.type);
+            }
+        }
+        else if (this.tipo == TipoAritmetica.MODULO){
+            let dominante = this.tipoDominanteModulo(leftValue.type,rightValue.type);
+            if (dominante == Type.DOUBLE) {
+                if (rightValue.value == 0) {
+                    throw new Error(this.line, this.column, "Semantico", "No se puede dividir entre 0");
+                } else {
+                    return { value: (leftValue.value % rightValue.value), type: Type.DOUBLE };
+                }
+            }else {
+                throw new Error(this.line, this.column, 'Semantico', 'No se puede operar: ' + leftValue.type + ' CON ' + rightValue.type);
+            }
+        }
+        else if(this.tipo == TipoAritmetica.NEGACIONUNARIA){
+            return {value: (leftValue.value * rightValue.value ),type:Type.DOUBLE}
+        }else {
+            throw new Error(this.line, this.column, 'Semantico', 'No se puede operar: ' + leftValue.type + ' CON ' + rightValue.type);
+        }
+    return {value: null, type: Type.BOOLEAN}
     }
 }
 
@@ -89,5 +116,8 @@ export enum TipoAritmetica {
     SUMA,
     RESTA,
     MULTIPLICACION,
-    DIVISION
+    DIVISION,
+    POTENCIA,
+    MODULO,
+    NEGACIONUNARIA
 }

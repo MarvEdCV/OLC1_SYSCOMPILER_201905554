@@ -76,7 +76,7 @@ export const tipodivision = [
         Type.ERROR, Type.ERROR,Type.ERROR,Type.ERROR,Type.ERROR
     ],
     [ 
-        Type.ERROR, Type.ERROR,Type.ERROR,Type.ERROR,Type.ERROR
+        Type.DOUBLE, Type.DOUBLE,Type.ERROR,Type.ERROR,Type.ERROR
     ],
     [ 
         Type.ERROR, Type.ERROR,Type.ERROR,Type.ERROR,Type.ERROR

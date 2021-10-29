@@ -49,6 +49,9 @@
 ">="                    return 'MAYOR_IGUAL';                     
 ">"                     return 'MAYOR';
 "!="                    return 'DIFERENTE';
+"||"                    return 'OR';
+"&&"                    return 'AND';
+"!"                     return 'NOT';
 //*/
 
 ','                     return 'COMA'
@@ -134,6 +137,7 @@ tiposDatos:
 //EXPRESION
 
 expresion
+    //Operaciones matematicas
     :MENOS expresion %prec UMENOS		{$$= new Aritmetica($2,new Literal("-1",TipoLiteral.DOUBLE, @1.first_line, @1.first_column),TipoAritmetica.MULTIPLICACION, @1.first_line, @1.first_column)}
     |expresion MAS expresion            {$$= new Aritmetica($1,$3,TipoAritmetica.SUMA, @1.first_line, @1.first_column)} 
     |expresion MENOS expresion          {$$= new Aritmetica($1,$3,TipoAritmetica.RESTA, @1.first_line, @1.first_column)} 
@@ -141,16 +145,29 @@ expresion
     |expresion DIVIDIR expresion        {$$= new Aritmetica($1,$3,TipoAritmetica.DIVISION, @1.first_line, @1.first_column)}
     |expresion ELEVAR expresion         {$$= new Aritmetica($1,$3,TipoAritmetica.POTENCIA, @1.first_line, @1.first_column)}
     |expresion MODULO expresion         {$$= new Aritmetica($1,$3,TipoAritmetica.MODULO, @1.first_line, @1.first_column)} 
+    //Operacines Relacionales
     |expresion D_IGUAL expresion        {$$= new Relacional($1,$3,TipoRelacional.IGUALIGUAL, @1.first_line, @1.first_column)} 
     |expresion DIFERENTE expresion      {$$= new Relacional($1,$3,TipoRelacional.DIFERENTE, @1.first_line, @1.first_column)} 
     |expresion MAYOR_IGUAL expresion    {$$= new Relacional($1,$3,TipoRelacional.MAYOR_IGUAL, @1.first_line, @1.first_column)} 
     |expresion MENOR_IGUAL expresion    {$$= new Relacional($1,$3,TipoRelacional.MENOR_IGUAL, @1.first_line, @1.first_column)} 
     |expresion MAYOR expresion          {$$= new Relacional($1,$3,TipoRelacional.MAYOR, @1.first_line, @1.first_column)}         
     |expresion MENOR expresion          {$$= new Relacional($1,$3,TipoRelacional.MENOR, @1.first_line, @1.first_column)}
+    //Operaciones Logicas
+    |expresion AND expresion            {$$= new Logica($1,$3,TipoLogica.AND, @1.first_line, @1.first_column)}
+    |expresion OR expresion             {$$= new Logica($1,$3,TipoLogica.OR, @1.first_line, @1.first_column)}
+    |NOT expresion                      {$$= new Logica(null,$2,TipoLogica.NOT, @1.first_line, @1.first_column)}
     |PAR_ABRE expresion PAR_CIERRA      {$$= $2}
 	|ENTERO	                            {$$= new Literal($1,TipoLiteral.INT, @1.first_line, @1.first_column)}
     |DECIMAL                            {$$= new Literal($1,TipoLiteral.DOUBLE, @1.first_line, @1.first_column)}							
-	|CADENA_COMILLAS                    {$$= new Literal($1,TipoLiteral.STRING, @1.first_line, @1.first_column)}  
+	|CADENA_COMILLAS                    {
+                                        var text = $1.substr(0,$1.length);
+                                         text=text.replace(/\\n/g,"\n");
+                                         text=text.replace(/\\t/g,"\t");
+                                         text=text.replace(/\\'/g,"\'");
+                                         text=text.replace(/\\\\/g,"\\");
+                                         text=text.replace(/\"/g,"\\\"");//no agarra no se por que:( pero si le cambio de simbolo si agarra
+                                        $$= new Literal(text,TipoLiteral.STRING, @1.first_line, @1.first_column);
+                                        }  
     |CADENA_COMILLAS_SIMPLES      		{$$= new Literal($1,TipoLiteral.CHAR, @1.first_line, @1.first_column)}			
     |TRUE                               {$$= new Literal($1,TipoLiteral.BOOLEAN, @1.first_line, @1.first_column)}                              
     |FALSE                              {$$= new Literal($1,TipoLiteral.BOOLEAN, @1.first_line, @1.first_column)}

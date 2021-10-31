@@ -36,18 +36,5 @@ export class Ambito {
         }
         return null;
     }
-    
-    public changeVal(id:string,value:any,type:Type,line,column){
-        let env:Ambito|null=this;
-        while (env!=null){
-            if(env.variables.has(id)){
-                //Si encuentra el id en el ambito borramos el temporal y lo sobreinscribimos
-                env.variables.delete(id);
-                //Sobreincribir
-                env.setVal(id,value,type,line,column)
-            }
-            env = env.anterior
-        }
-    }
 
 }

@@ -8,6 +8,8 @@
     const {AccesoAmbito} = require('../Expresion/AccesoAmbito')
     const {Declaracion} = require('../Instruccion/Declaracion')
     const {WriteLine} = require('../Instruccion/WriteLine')
+    const {Asignacion} = require('../Instruccion/Asignacion')
+    const {AsignacionSinDeclaracion} = require('../Instruccion/AsignacionSinDeclaracion')
 %}
 
 %lex
@@ -108,18 +110,26 @@ instrucciones
 inicio
     :writeline
     |declaracion
+    |asignacion
 ;
+asignacion
+    :IDENTIFICADOR IGUAL expresion PUNTO_Y_COMA                  {$$= new AsignacionSinDeclaracion($1,$3,@1.first_line, @1.first_column)}
+    |tiposDatos IDENTIFICADOR IGUAL expresion PUNTO_Y_COMA       {$$ = new Declaracion($1,$2,$4,@1.first_line, @1.first_column)}
 
+;
 declaracion 
-    : tiposDatos IDENTIFICADOR IGUAL expresion PUNTO_Y_COMA 
-        {$$ = new Declaracion($2,$4,@1.first_line, @1.first_column)}
+    :tiposDatos ListaVariables PUNTO_Y_COMA                       {$$= new Asignacion($1,$2,@1.first_line, @1.first_column)}
 ;
 
 writeline
     :WRITELINE PAR_ABRE ListaExpr PAR_CIERRA PUNTO_Y_COMA 
         {$$ = new WriteLine($3,@1.first_line, @1.first_column)}
 ;
-
+ListaVariables
+    :ListaVariables COMA IDENTIFICADOR  { $1.push($3);
+                                          $$ = $1;}
+    |IDENTIFICADOR                      {$$ = [$1];}
+;
 ListaExpr 
     : ListaExpr COMA expresion
         { $1.push($3);$$ = $1;}

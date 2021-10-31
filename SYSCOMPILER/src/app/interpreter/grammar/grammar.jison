@@ -11,6 +11,7 @@
     const {Asignacion} = require('../Instruccion/Asignacion')
     const {AsignacionSinDeclaracion} = require('../Instruccion/AsignacionSinDeclaracion')
     const {Casteos} = require('../Instruccion/Casteos')
+    const {IncrementoDecremento}=require('../Instruccion/IncrementoDecremento')
 %}
 
 %lex
@@ -56,7 +57,8 @@
 "&&"                    return 'AND';
 "!"                     return 'NOT';
 //*/
-
+'++'                    return 'MASMAS'
+'--'                    return 'MENOSMENOS'
 ','                     return 'COMA'
 "+"					    return 'MAS';
 "-"					    return 'MENOS';
@@ -169,7 +171,11 @@ expresion
     |expresion OR expresion             {$$= new Logica($1,$3,TipoLogica.OR, @1.first_line, @1.first_column)}
     |NOT expresion                      {$$= new Logica(null,$2,TipoLogica.NOT, @1.first_line, @1.first_column)}
     |PAR_ABRE expresion PAR_CIERRA      {$$= $2}
+    //Casteos
     |PAR_ABRE tiposDatos PAR_CIERRA expresion {$$ = new Casteos($2,$4,@1.first_line, @1.first_column)}
+    //incrementos y decrementos
+    |IDENTIFICADOR MASMAS               {$$=new IncrementoDecremento($1,$2,@1.first_line, @1.first_column)}
+    |IDENTIFICADOR MENOSMENOS           {$$=new IncrementoDecremento($1,$2,@1.first_line, @1.first_column)}
 	|ENTERO	                            {$$= new Literal($1,TipoLiteral.INT, @1.first_line, @1.first_column)}
     |DECIMAL                            {$$= new Literal($1,TipoLiteral.DOUBLE, @1.first_line, @1.first_column)}							
 	|CADENA_COMILLAS                    {

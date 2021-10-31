@@ -19,9 +19,9 @@ export class AsignacionSinDeclaracion extends Instruccion {
             //Ejecutamos la expresion que estamos asignando.
             let newsimbol = this.value.execute(ambito)
             if(simbolo.type==newsimbol.type){
-                
-                simbolo.valor = newsimbol.value;
-                
+                //CHANEVAL
+                    simbolo.valor = newsimbol.value
+                    
             }else{
                 throw new Error(this.line, this.column, 'Semantico', 'No se puede asignar el valor a la variable\nya que es de un tipo diferente ya que la variable'+simbolo.id+'es de tipo: '+simbolo.type)
             }

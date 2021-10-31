@@ -21,7 +21,6 @@ export class Declaracion extends Instruccion {
         let typeenum;
         if(this.type.toUpperCase()=="INT"){
             typeenum = 0;
-            
         }else if(this.type.toUpperCase()=="DOUBLE"){
             typeenum = 1;
             
@@ -38,7 +37,7 @@ export class Declaracion extends Instruccion {
         if(typeenum==val.type){
             ambito.setVal(this.id, val.value, val.type, this.line, this.column)
         }else{
-            throw new Error(this.line, this.column, 'Semantico', 'No se puede asignar este valor a este tipo de datox')
+            throw new Error(this.line, this.column, 'Semantico', 'No se puede asignar este valor a este tipo de dato')
         }
         console.log(ambito.variables)
         

@@ -11,7 +11,7 @@
     const {Asignacion} = require('../Instruccion/Asignacion')
     const {AsignacionSinDeclaracion} = require('../Instruccion/AsignacionSinDeclaracion')
     const {Casteos} = require('../Instruccion/Casteos')
-    const {IncrementoDecremento}=require('../Instruccion/IncrementoDecremento')
+    const {IncrementoDecremento}=require('../Expresion/IncrementoDecremento')
 %}
 
 %lex
@@ -87,7 +87,8 @@
 %left 'MAS' 'MENOS' 
 %left 'POR' 'DIVIDIR' 'MODULO'
 %left 'ELEVAR'
-%left 'PAR_ABRE' 'PAR_CIERRA'  
+%left 'PAR_ABRE' 'PAR_CIERRA' 
+%left 'MASMAS' 'MENOSMENOS' 
 %left UMENOS
 %right 'NOT'
 
@@ -174,8 +175,7 @@ expresion
     //Casteos
     |PAR_ABRE tiposDatos PAR_CIERRA expresion {$$ = new Casteos($2,$4,@1.first_line, @1.first_column)}
     //incrementos y decrementos
-    |IDENTIFICADOR MASMAS               {$$=new IncrementoDecremento($1,$2,@1.first_line, @1.first_column)}
-    |IDENTIFICADOR MENOSMENOS           {$$=new IncrementoDecremento($1,$2,@1.first_line, @1.first_column)}
+    |incrementos                        {$$=$1}
 	|ENTERO	                            {$$= new Literal($1,TipoLiteral.INT, @1.first_line, @1.first_column)}
     |DECIMAL                            {$$= new Literal($1,TipoLiteral.DOUBLE, @1.first_line, @1.first_column)}							
 	|CADENA_COMILLAS                    {
@@ -192,6 +192,7 @@ expresion
     |FALSE                              {$$= new Literal($1,TipoLiteral.BOOLEAN, @1.first_line, @1.first_column)}
     |IDENTIFICADOR                      {$$= new AccesoAmbito($1, @1.first_line, @1.first_column)}
 ;
-casteo:
-
+incrementos
+    :IDENTIFICADOR MASMAS               {$$=new IncrementoDecremento($1,$2,@1.first_line, @1.first_column)}
+    |IDENTIFICADOR MENOSMENOS           {$$=new IncrementoDecremento($1,$2,@1.first_line, @1.first_column)}
 ;

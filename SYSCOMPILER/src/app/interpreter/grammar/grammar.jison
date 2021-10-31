@@ -33,7 +33,7 @@
 
 
 //'dijofdjf'+${}'
-[0-9]+("."[0-9]+)?\b  	return 'DECIMAL';
+[0-9]+("."[0-9]+)+\b  	return 'DECIMAL';
 [0-9]+\b				return 'ENTERO';
 ([a-zA-Z])[a-zA-Z0-9_]*	return 'IDENTIFICADOR';
 [A-Za-z]+["_"0-9A-Za-z]* return 'CADENA_COMILLAS';
@@ -160,13 +160,13 @@ expresion
 	|ENTERO	                            {$$= new Literal($1,TipoLiteral.INT, @1.first_line, @1.first_column)}
     |DECIMAL                            {$$= new Literal($1,TipoLiteral.DOUBLE, @1.first_line, @1.first_column)}							
 	|CADENA_COMILLAS                    {
-                                        var text = $1.substr(0,$1.length);
-                                         text=text.replace(/\\n/g,"\n");
-                                         text=text.replace(/\\t/g,"\t");
-                                         text=text.replace(/\\'/g,"\'");
-                                         text=text.replace(/\\\\/g,"\\");
-                                         text=text.replace(/\"/g,"\\\"");//no agarra no se por que:( pero si le cambio de simbolo si agarra
-                                        $$= new Literal(text,TipoLiteral.STRING, @1.first_line, @1.first_column);
+                                        var cadena = $1.substr(0,$1.length);
+                                         cadena=cadena.replace(/\\n/g,"\n");
+                                         cadena=cadena.replace(/\\t/g,"\t");
+                                         cadena=cadena.replace(/\\'/g,"\'");
+                                         cadena=cadena.replace(/\\\\/g,"\\");
+                                         cadena=cadena.replace(/\"/g,"\\\"");//no agarra no se por que:( pero si le cambio de simbolo si agarra
+                                        $$= new Literal(cadena,TipoLiteral.STRING, @1.first_line, @1.first_column);
                                         }  
     |CADENA_COMILLAS_SIMPLES      		{$$= new Literal($1,TipoLiteral.CHAR, @1.first_line, @1.first_column)}			
     |TRUE                               {$$= new Literal($1,TipoLiteral.BOOLEAN, @1.first_line, @1.first_column)}                              

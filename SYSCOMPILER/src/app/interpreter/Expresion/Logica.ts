@@ -19,7 +19,7 @@ export class Logica extends Expresion {
                 }
         }else if(this.tipo == TipoLogica.OR){
             const leftValue = this.left.execute(ambito);
-        const rightValue = this.right.execute(ambito);
+            const rightValue = this.right.execute(ambito);
             if(leftValue.type == Type.BOOLEAN && rightValue.type == Type.BOOLEAN){
                 return{value:(leftValue.value || rightValue.value),type: Type.BOOLEAN}
             }else{

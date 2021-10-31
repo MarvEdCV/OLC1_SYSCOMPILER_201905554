@@ -67,7 +67,7 @@ export const tipomultiplicacion = [
 
 export const tipodivision = [
     [ 
-        Type.INT,Type.DOUBLE, Type.ERROR,Type.ERROR,Type.ERROR
+        Type.DOUBLE,Type.DOUBLE, Type.ERROR,Type.DOUBLE,Type.ERROR
     ],
     [
         Type.DOUBLE,Type.DOUBLE, Type.ERROR, Type.DOUBLE, Type.ERROR

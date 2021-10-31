@@ -25,7 +25,18 @@ export class Aritmetica extends Expresion {
                     return{value:(rightValue.value.charCodeAt()+leftValue.value),type: Type.DOUBLE}
                 }
                 return { value: (leftValue.value + rightValue.value), type: Type.DOUBLE};
-            } else {
+                }
+                else if (dominante == Type.INT) {
+                    //Validacion para operacion char con int
+                    if(leftValue.type==Type.CHAR){
+                        return{value:(leftValue.value.charCodeAt()+rightValue.value),type: Type.INT}
+                    }
+                    else if(rightValue.type==Type.CHAR){
+                        return{value:(rightValue.value.charCodeAt()+leftValue.value),type: Type.INT}
+                    }
+                    return { value: (leftValue.value + rightValue.value), type: Type.DOUBLE};
+                    }
+                else {
                 throw new Error(this.line, this.column, 'Semantico', 'No se puede operar: ' + leftValue.type + ' CON ' + rightValue.type);
             }
         } else if (this.tipo == TipoAritmetica.RESTA) {
@@ -39,7 +50,18 @@ export class Aritmetica extends Expresion {
                     return{value:(leftValue.value-rightValue.value.charCodeAt()),type: Type.DOUBLE}
                 }
                 return { value: (leftValue.value - rightValue.value), type: Type.DOUBLE };
-            } else {
+            }if (dominante == Type.INT) {
+                //Validacion para operacion char con int
+            
+                if(leftValue.type==Type.CHAR){
+                    return{value:(leftValue.value.charCodeAt()-rightValue.value),type: Type.INT}
+                }
+                else if(rightValue.type==Type.CHAR){
+                    return{value:(leftValue.value-rightValue.value.charCodeAt()),type: Type.INT}
+                }
+                return { value: (leftValue.value - rightValue.value), type: Type.DOUBLE };
+            }
+             else {
                 throw new Error(this.line, this.column, 'Semantico', 'No se puede operar: ' + leftValue.type + ' CON ' + rightValue.type);
             }
         }
@@ -56,6 +78,20 @@ export class Aritmetica extends Expresion {
                     return{value:(rightValue.value.charCodeAt()*leftValue.value),type: Type.DOUBLE}
                 }else{
                     return { value: (leftValue.value * rightValue.value), type: Type.DOUBLE };
+                }
+                }
+                throw new Error(this.line, this.column, 'Semantico', 'No se puede operar: ' + leftValue.type + ' CON ' + rightValue.type);
+            }
+            if (dominante == Type.INT) {
+                if (leftValue.type != Type.BOOLEAN || rightValue.type != Type.BOOLEAN) {
+                    //Validacion para operacion char con int
+                 if(leftValue.type==Type.CHAR){
+                    return{value:(leftValue.value.charCodeAt()*rightValue.value),type: Type.INT}
+                }
+                else if(rightValue.type==Type.CHAR){
+                    return{value:(rightValue.value.charCodeAt()*leftValue.value),type: Type.INT}
+                }else{
+                    return { value: (leftValue.value * rightValue.value), type: Type.INT };
                 }
                 }
                 throw new Error(this.line, this.column, 'Semantico', 'No se puede operar: ' + leftValue.type + ' CON ' + rightValue.type);
@@ -86,6 +122,11 @@ export class Aritmetica extends Expresion {
             if(dominante == Type.DOUBLE){
                 if (leftValue.type != Type.BOOLEAN || rightValue.type != Type.BOOLEAN) {
                     return { value: (Math.pow(leftValue.value, rightValue.value)), type: Type.DOUBLE };
+                }
+            }
+            else if(dominante == Type.INT){
+                if (leftValue.type != Type.BOOLEAN || rightValue.type != Type.BOOLEAN) {
+                    return { value: (Math.pow(leftValue.value, rightValue.value)), type: Type.INT };
                 }
             }else{
                 throw new Error(this.line, this.column, 'Semantico', 'No se puede operar: ' + leftValue.type + ' CON ' + rightValue.type);

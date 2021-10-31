@@ -110,3 +110,20 @@ Restas Con CADENA
 //WriteLine(c-f);//true-string=ERROR
 //WriteLine(e-f);//a-string=ERROR
 //WriteLine(f-f);//string-a=ERROR
+
+//PRUEBAS RELACIONALES
+//entero-entero
+writeline(5==5);//true
+writeline(5!=5);//false
+writeline(5<5);//false
+writeline(5<=5);//true
+writeline(5>5);//false
+writeline(5>=5);//true
+writeline("\n");
+//entero-double
+writeline(5==5.2);//false
+writeline(5!=5.2);//true
+writeline(5<5.2);//true
+writeline(5<=5.1);//true
+writeline(5>5.35);//false
+writeline(5>=5.2);//false

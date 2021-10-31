@@ -10,6 +10,7 @@
     const {WriteLine} = require('../Instruccion/WriteLine')
     const {Asignacion} = require('../Instruccion/Asignacion')
     const {AsignacionSinDeclaracion} = require('../Instruccion/AsignacionSinDeclaracion')
+    const {Casteos} = require('../Instruccion/Casteos')
 %}
 
 %lex
@@ -83,7 +84,8 @@
 %left 'MENOR_IGUAL' 'MAYOR_IGUAL' 'MENOR' 'MAYOR'
 %left 'MAS' 'MENOS' 
 %left 'POR' 'DIVIDIR' 'MODULO'
-%left 'ELEVAR'  
+%left 'ELEVAR'
+%left 'PAR_ABRE' 'PAR_CIERRA'  
 %left UMENOS
 %right 'NOT'
 
@@ -167,6 +169,7 @@ expresion
     |expresion OR expresion             {$$= new Logica($1,$3,TipoLogica.OR, @1.first_line, @1.first_column)}
     |NOT expresion                      {$$= new Logica(null,$2,TipoLogica.NOT, @1.first_line, @1.first_column)}
     |PAR_ABRE expresion PAR_CIERRA      {$$= $2}
+    |PAR_ABRE tiposDatos PAR_CIERRA expresion {$$ = new Casteos($2,$4,@1.first_line, @1.first_column)}
 	|ENTERO	                            {$$= new Literal($1,TipoLiteral.INT, @1.first_line, @1.first_column)}
     |DECIMAL                            {$$= new Literal($1,TipoLiteral.DOUBLE, @1.first_line, @1.first_column)}							
 	|CADENA_COMILLAS                    {
@@ -182,4 +185,7 @@ expresion
     |TRUE                               {$$= new Literal($1,TipoLiteral.BOOLEAN, @1.first_line, @1.first_column)}                              
     |FALSE                              {$$= new Literal($1,TipoLiteral.BOOLEAN, @1.first_line, @1.first_column)}
     |IDENTIFICADOR                      {$$= new AccesoAmbito($1, @1.first_line, @1.first_column)}
+;
+casteo:
+
 ;

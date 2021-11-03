@@ -11,7 +11,13 @@
     const {Asignacion} = require('../Instruccion/Asignacion')
     const {AsignacionSinDeclaracion} = require('../Instruccion/AsignacionSinDeclaracion')
     const {Casteos} = require('../Instruccion/Casteos')
-    const {IncrementoDecremento}=require('../Expresion/IncrementoDecremento')
+    const {IncrementoDecremento}=require('../Instruccion/IncrementoDecremento')
+    const {If}=require('../Instruccion/If')
+    const {Statement}=require('../Instruccion/Statement')
+    const {Continue}=require('../Instruccion/Continue')
+    const {Break}=require('../Instruccion/Break')
+    const {While}=require('../Instruccion/While')
+    const {Switch}=require('../Instruccion/Switch')
 %}
 
 %lex
@@ -33,7 +39,15 @@
 "int"                   return 'INT';
 "double"                return 'DOUBLE';
 "boolean"               return 'BOOLEAN';
-"char"                return 'CHAR';
+"char"                  return 'CHAR';
+"if"                    return 'IF';
+"else"                  return 'ELSE';
+"while"                 return 'WHILE';
+"break"                 return 'BREAK';
+"continue"              return 'CONTINUE';
+"switch"                return 'SWITCH';
+"default"               return 'DEFAULT';
+"case"                  return 'CASE';
 
 
 //'dijofdjf'+${}'
@@ -45,6 +59,8 @@
 
 "("                     return 'PAR_ABRE';                   
 ")"                     return 'PAR_CIERRA';
+"{"                     return   'LLAV_ABRE';
+"}"                     return   'LLAV_CIERRA';
 
 //logicos
 "=="                    return 'D_IGUAL';
@@ -68,13 +84,16 @@
 "%"					    return 'MODULO';
 "="                     return 'IGUAL';
 ";"                     return 'PUNTO_Y_COMA';
+":"                     return 'DOS_PUNTOS';
+
 
 \"[^\"]*\"				{ yytext = yytext.substr(1,yyleng-2); return 'CADENA_COMILLAS';}
 \'[^\']*\'				{ yytext = yytext.substr(1,yyleng-2); return 'CADENA_COMILLAS_SIMPLES';}
 <<EOF>>				    return 'EOF';
 .					    {
-                        const er = new error_1.Error(yylloc.first_line,yylloc.first_column,"Léxico",yytext);
-                        listaErrores.ListaErrores.getInstance().push(er);                       
+                        /*const er = new error_1.Error(yylloc.first_line,yylloc.first_column,"Léxico",yytext);
+                        listaErrores.ListaErrores.getInstance().push(er);*/
+                        console.log(yylloc.first_line, yylloc.first_column,'Lexico',yytext)                       
                         }
 /lex
 
@@ -88,9 +107,9 @@
 %left 'POR' 'DIVIDIR' 'MODULO'
 %left 'ELEVAR'
 %left 'PAR_ABRE' 'PAR_CIERRA' 
-%left 'MASMAS' 'MENOSMENOS' 
 %left UMENOS
 %right 'NOT'
+%left 'MASMAS' 'MENOSMENOS' 
 
 
 
@@ -116,31 +135,74 @@ inicio
     :writeline
     |declaracion
     |asignacion
+    |if
+    |while 
+    |switch
+    |BREAK PUNTO_Y_COMA      {$$=new Break(@1.first_line, @1.first_column)}
+    |CONTINUE PUNTO_Y_COMA   {$$=new Continue(@1.first_line, @1.first_column)}
 ;
-asignacion
-    :IDENTIFICADOR IGUAL expresion PUNTO_Y_COMA                  {$$= new AsignacionSinDeclaracion($1,$3,@1.first_line, @1.first_column)}
-    |tiposDatos IDENTIFICADOR IGUAL expresion PUNTO_Y_COMA       {$$ = new Declaracion($1,$2,$4,@1.first_line, @1.first_column)}
+/*
+STATEMENT
+*/
+statement
+    :LLAV_ABRE LLAV_CIERRA                      {$$=new Statement([],@1.first_line, @1.first_column)}
+    |LLAV_ABRE instrucciones LLAV_CIERRA        {$$= new Statement($2,@1.first_line, @1.first_column)}
+;
+/*
+IF,ELSE,ELSE IF
+*/
 
-;
-declaracion 
-    :tiposDatos ListaVariables PUNTO_Y_COMA                       {$$= new Asignacion($1,$2,@1.first_line, @1.first_column)}
+if
+    :IF PAR_ABRE expresion PAR_CIERRA statement else               {$$= new If($3,$5,$6,@1.first_line, @1.first_column)}  
+    
 ;
 
+else
+    :ELSE statement     {$$=$2}
+    |ELSE if            {$$=$2}
+    |                   {$$=null}
+    
+;
+/*
+WHILE
+*/
+while
+    :WHILE PAR_ABRE expresion PAR_CIERRA statement {$$=new While($3,$5,@1.first_line, @1.first_column)}
+;
+/*
+SWITCH
+*/
+
+
+switch
+    :SWITCH PAR_ABRE expresion PAR_CIERRA LLAV_ABRE ListaCase LLAV_CIERRA {$$=new Switch($3,$6,@1.first_line, @1.first_column)}
+;
+
+ListaCase
+    :ListaCase case {$1.push($2);$$=$1;}
+    |case           {$$=[$1];}
+;
+case
+    :CASE expresion DOS_PUNTOS instrucciones {$$=[$2,$4]}
+    |DEFAULT DOS_PUNTOS instrucciones {$$=[new Literal("DEFAULT",TipoLiteral.STRING, @1.first_line, @1.first_column),$3]}
+;
+
+/*
+WRITELINE
+*/
 writeline
     :WRITELINE PAR_ABRE ListaExpr PAR_CIERRA PUNTO_Y_COMA 
         {$$ = new WriteLine($3,@1.first_line, @1.first_column)}
 ;
+/*
+VARIABLES,ASIGNACION,DECLARACIONES,LISTAS
+*/
 ListaVariables
     :ListaVariables COMA IDENTIFICADOR  { $1.push($3);
                                           $$ = $1;}
     |IDENTIFICADOR                      {$$ = [$1];}
 ;
-ListaExpr 
-    : ListaExpr COMA expresion
-        { $1.push($3);$$ = $1;}
-    | expresion
-        {$$ = [$1];}
-;
+
 tiposDatos:
     STRING
     |INT
@@ -148,9 +210,29 @@ tiposDatos:
     |BOOLEAN
     |CHAR
 ;
+asignacion
+    :IDENTIFICADOR IGUAL expresion PUNTO_Y_COMA                  {$$= new AsignacionSinDeclaracion($1,$3,@1.first_line, @1.first_column)}
+    |tiposDatos IDENTIFICADOR IGUAL expresion PUNTO_Y_COMA       {$$ = new Declaracion($1,$2,$4,@1.first_line, @1.first_column)}
+    |incrementos PUNTO_Y_COMA                                    {$$=$1}
 
+;
+declaracion 
+    :tiposDatos ListaVariables PUNTO_Y_COMA                       {$$= new Asignacion($1,$2,@1.first_line, @1.first_column)}
+;
+/*
+INCREMENTO Y DECREMENTO
+*/
+incrementos
+    :IDENTIFICADOR MASMAS               {$$=new IncrementoDecremento($1,$2,@1.first_line, @1.first_column)}
+    |IDENTIFICADOR MENOSMENOS           {$$=new IncrementoDecremento($1,$2,@1.first_line, @1.first_column)}
+;
 //EXPRESION
-
+ListaExpr 
+    : ListaExpr COMA expresion
+        { $1.push($3);$$ = $1;}
+    | expresion
+        {$$ = [$1];}
+;
 expresion
     //Operaciones matematicas
     :MENOS expresion %prec UMENOS		{$$= new Aritmetica($2,new Literal("-1",TipoLiteral.DOUBLE, @1.first_line, @1.first_column),TipoAritmetica.MULTIPLICACION, @1.first_line, @1.first_column)}
@@ -192,7 +274,4 @@ expresion
     |FALSE                              {$$= new Literal($1,TipoLiteral.BOOLEAN, @1.first_line, @1.first_column)}
     |IDENTIFICADOR                      {$$= new AccesoAmbito($1, @1.first_line, @1.first_column)}
 ;
-incrementos
-    :IDENTIFICADOR MASMAS               {$$=new IncrementoDecremento($1,$2,@1.first_line, @1.first_column)}
-    |IDENTIFICADOR MENOSMENOS           {$$=new IncrementoDecremento($1,$2,@1.first_line, @1.first_column)}
-;
+

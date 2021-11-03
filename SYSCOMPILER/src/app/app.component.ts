@@ -46,6 +46,7 @@ export class AppComponent implements OnInit {
   }
   AddConsole(variable: any){
     if (variable!=null){
+      console.log(variable);
       this.consolelog =this.consolelog +">"+ variable + "\n"
     }
   }
@@ -71,7 +72,7 @@ export class AppComponent implements OnInit {
   ejecutar() {
     const entrada = this.codeEditor?.getValue()
     console.log("Iniciando Análisis...")
-    this.AddConsole("Iniciando Análisis...");
+    this.consolelog="Iniciando Análisis";
     if (entrada == "") {
       alert("Entrada vacia")
       return
@@ -82,14 +83,14 @@ export class AppComponent implements OnInit {
     const ambito = new Ambito(null);
     for(const inst of ast){
       inst.execute(ambito);
-      this.AddConsole(textPrint);
+      this.consolelog = textPrint;
       
     }
     } catch (error) {
       console.log(error)
     }
-    this.AddConsole(MensajeError);
-    this.AddConsole("Análisis Finalizado... ");
+    this.consolelog = this.consolelog +MensajeError
+    this.consolelog= this.consolelog +"\n"+"Análisis Finalizado...";
     console.log("Análisis Finalizado...")
   }
 

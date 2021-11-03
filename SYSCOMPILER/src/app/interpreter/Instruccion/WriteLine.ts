@@ -2,7 +2,7 @@ import { Instruccion } from '../Instruccion/Instruccion';
 import { Expresion } from '../Expresion/Expresion';
 import { Ambito } from '../Ambito/Ambito';
 import { AppComponent} from 'src/app/app.component';
-export  let textPrint
+export  let textPrint="Iniciando Análisis...";
 
 export class WriteLine extends Instruccion {
     private value: Expresion[]
@@ -14,7 +14,7 @@ export class WriteLine extends Instruccion {
     public execute(ambito: Ambito): any {
         for (const actual of this.value) {
             const val = actual.execute(ambito)
-            textPrint   = val.value;
+            textPrint   = textPrint +"\n>"+val.value ;
             //console.log(val.value)
         }
     }

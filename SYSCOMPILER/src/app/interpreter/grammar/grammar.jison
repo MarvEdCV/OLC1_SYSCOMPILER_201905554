@@ -20,6 +20,7 @@
     const {Switch}=require('../Instruccion/Switch')
     const {DoWhile}=require('../Instruccion/DoWhile')
     const {For}=require('../Instruccion/For')
+    const {Error}=require('../Error/Error')
 %}
 
 %lex
@@ -97,7 +98,8 @@
 .					    {
                         /*const er = new error_1.Error(yylloc.first_line,yylloc.first_column,"Léxico",yytext);
                         listaErrores.ListaErrores.getInstance().push(er);*/
-                        console.log(yylloc.first_line, yylloc.first_column,'Lexico',yytext)                       
+                        console.log(yylloc.first_line, yylloc.first_column,'Lexico',yytext);
+                        new Error(yylloc.first_line, yylloc.first_column,'Lexico','Error detectado');                     
                         }
 /lex
 

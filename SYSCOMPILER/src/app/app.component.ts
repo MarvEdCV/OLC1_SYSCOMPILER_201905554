@@ -70,7 +70,8 @@ export class AppComponent implements OnInit {
   }
 
   ejecutar() {
-    const entrada = this.codeEditor?.getValue()
+    let entrada = this.codeEditor?.getValue()
+    entrada = entrada.toLowerCase();
     console.log("Iniciando Análisis...")
     this.consolelog="Iniciando Análisis";
     if (entrada == "") {

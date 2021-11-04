@@ -2,13 +2,16 @@
 import { Error } from "../Error/Error";
 import { Type } from "../Expresion/Retorno";
 import { Declaracion } from "../Instruccion/Declaracion";
+import { Metodo } from "../Instruccion/Metodo";
 import { Simbolo } from "./Simbolo"
 
 export class Ambito {
     public variables: Map<string, Simbolo>
+    public metodos: Map<string,Metodo>
 
     constructor(public anterior: Ambito | null) {
         this.variables = new Map();
+        this.metodos  = new Map();
     }
 
     public setVal(id: string, value: any, type: Type, line, column) {
@@ -37,4 +40,19 @@ export class Ambito {
         return null;
     }
 
+    public SaveMethod(id:string,metodo:Metodo){
+        this.metodos.set(id,metodo)
+    }
+    public GetMethod(id:string){
+        let env:Ambito|null = this
+        while(env!=null){
+            if(env.metodos.has(id)){
+                return env.metodos.get(id)
+            }
+            env = env.anterior 
+        }
+       
+        return null;
+
+    }
 }

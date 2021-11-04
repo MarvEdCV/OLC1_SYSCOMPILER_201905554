@@ -2,8 +2,6 @@ import { Instruccion } from "./Instruccion";
 import { Ambito } from "../Ambito/Ambito";
 import { Error } from "../Error/Error";
 import { Expresion } from "../Expresion/Expresion";
-import { Metodo } from "./Metodo";
-import { Type } from "../Expresion/Retorno";
 export class LlamadaMetodo extends Instruccion {
     constructor(private id: string, private expresiones: Array<Expresion>, line: number, column: number) {
         super(line, column);

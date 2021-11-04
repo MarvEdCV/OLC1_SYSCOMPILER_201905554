@@ -21,6 +21,8 @@
     const {DoWhile}=require('../Instruccion/DoWhile')
     const {For}=require('../Instruccion/For')
     const {Error}=require('../Error/Error')
+    const {Metodo}=require('../Instruccion/Metodo')
+    const {LlamadaMetodo}=require('../Instruccion/LlamadaMetodo')
 %}
 
 %lex
@@ -53,6 +55,8 @@
 "default"               return 'DEFAULT';
 "case"                  return 'CASE';
 "for"                   return 'FOR';
+"void"                  return 'VOID';
+
 
 
 //'dijofdjf'+${}'
@@ -146,6 +150,8 @@ inicio
     |dowhile 
     |switch
     |for
+    |metodo
+    |llamadametodo PUNTO_Y_COMA 
     |BREAK PUNTO_Y_COMA      {$$=new Break(@1.first_line, @1.first_column)}
     |CONTINUE PUNTO_Y_COMA   {$$=new Continue(@1.first_line, @1.first_column)}
 ;
@@ -196,12 +202,27 @@ actualizacion
 /*
 SWITCH
 */
-
-
 switch
     :SWITCH PAR_ABRE expresion PAR_CIERRA LLAV_ABRE ListaCase LLAV_CIERRA {$$=new Switch($3,$6,@1.first_line, @1.first_column)}
 ;
-
+/*
+METODOS
+*/
+metodo
+    :VOID IDENTIFICADOR PAR_ABRE PAR_CIERRA statement               {$$=new Metodo($2,$5,[],@1.first_line, @1.first_column)}
+    |VOID IDENTIFICADOR PAR_ABRE parametros PAR_CIERRA statement    {$$=new Metodo($2,$6,$4,@1.first_line, @1.first_column)}
+;
+parametros
+    :parametros COMA declaracionmetodo    {$1.push($3);$$=$1;}
+    |declaracionmetodo                    {$$=[$1]}   
+;
+declaracionmetodo
+    :tiposDatosparametros IDENTIFICADOR             {$$=[$1,$2]}
+;
+llamadametodo
+    :IDENTIFICADOR  PAR_ABRE PAR_CIERRA              {$$=new LlamadaMetodo($1,[],@1.first_line, @1.first_column)}
+    |IDENTIFICADOR PAR_ABRE ListaExpr PAR_CIERRA     {$$=new LlamadaMetodo($1,$3,@1.first_line, @1.first_column)}
+;
 ListaCase
     :ListaCase case {$1.push($2);$$=$1;}
     |case           {$$=[$1];}
@@ -233,6 +254,13 @@ tiposDatos:
     |DOUBLE
     |BOOLEAN
     |CHAR
+;
+tiposDatosparametros:
+    STRING  {$$=4}
+    |INT    {$$=0}
+    |DOUBLE {$$=1}
+    |BOOLEAN{$$=2}
+    |CHAR   {$$=3}
 ;
 asignacion
     :IDENTIFICADOR IGUAL expresion PUNTO_Y_COMA                  {$$= new AsignacionSinDeclaracion($1,$3,@1.first_line, @1.first_column)}
@@ -278,6 +306,8 @@ expresion
     |expresion OR expresion             {$$= new Logica($1,$3,TipoLogica.OR, @1.first_line, @1.first_column)}
     |NOT expresion                      {$$= new Logica(null,$2,TipoLogica.NOT, @1.first_line, @1.first_column)}
     |PAR_ABRE expresion PAR_CIERRA      {$$= $2}
+    //Llamada funcion
+    |llamadametodo
     //Casteos
     |PAR_ABRE tiposDatos PAR_CIERRA expresion {$$ = new Casteos($2,$4,@1.first_line, @1.first_column)}
     //incrementos y decrementos

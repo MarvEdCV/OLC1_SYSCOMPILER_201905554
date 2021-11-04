@@ -8,6 +8,7 @@ import 'ace-builds/src-noconflict/ext-beautify';
 import 'ace-builds/src-noconflict/mode-typescript';
 import 'ace-builds/src-noconflict/theme-tomorrow_night_eighties'; 
 import { Ambito } from './interpreter/Ambito/Ambito';
+import { Metodo } from './interpreter/Instruccion/Metodo';
 const THEME = 'ace/theme/tomorrow_night_eighties';
 const LANG = 'ace/mode/typescript';
 
@@ -80,15 +81,30 @@ export class AppComponent implements OnInit {
     } 
    const ast = parser.parse(entrada)
    console.log(ast)
+   const ambito = new Ambito(null);
+   try {
+    for(const instruccion of ast){
+      if(instruccion instanceof Metodo){
+        instruccion.execute(ambito);
+      }
+    }
+   } catch (error) {
+     console.log(error)
+     this.consolelog = this.consolelog+error;
+   }
     try {
-    const ambito = new Ambito(null);
+    
     for(const inst of ast){
+      if(inst instanceof Metodo){
+        continue;
+      }
       inst.execute(ambito);
       this.consolelog = textPrint;
       
     }
     } catch (error) {
       console.log(error)
+      this.consolelog = this.consolelog+error;
     }
     this.consolelog = this.consolelog +MensajeError
     this.consolelog= this.consolelog +"\n"+"Análisis Finalizado...";

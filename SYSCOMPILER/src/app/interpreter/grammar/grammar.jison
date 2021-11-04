@@ -18,6 +18,7 @@
     const {Break}=require('../Instruccion/Break')
     const {While}=require('../Instruccion/While')
     const {Switch}=require('../Instruccion/Switch')
+    const {DoWhile}=require('../Instruccion/DoWhile')
 %}
 
 %lex
@@ -43,6 +44,7 @@
 "if"                    return 'IF';
 "else"                  return 'ELSE';
 "while"                 return 'WHILE';
+"do"                    return 'DO';
 "break"                 return 'BREAK';
 "continue"              return 'CONTINUE';
 "switch"                return 'SWITCH';
@@ -136,7 +138,8 @@ inicio
     |declaracion
     |asignacion
     |if
-    |while 
+    |while
+    |dowhile 
     |switch
     |BREAK PUNTO_Y_COMA      {$$=new Break(@1.first_line, @1.first_column)}
     |CONTINUE PUNTO_Y_COMA   {$$=new Continue(@1.first_line, @1.first_column)}
@@ -146,7 +149,7 @@ STATEMENT
 */
 statement
     :LLAV_ABRE LLAV_CIERRA                      {$$=new Statement([],@1.first_line, @1.first_column)}
-    |LLAV_ABRE instrucciones LLAV_CIERRA        {$$= new Statement($2,@1.first_line, @1.first_column)}
+    |LLAV_ABRE instrucciones LLAV_CIERRA        {$$=new Statement($2,@1.first_line, @1.first_column)}
 ;
 /*
 IF,ELSE,ELSE IF
@@ -169,6 +172,13 @@ WHILE
 while
     :WHILE PAR_ABRE expresion PAR_CIERRA statement {$$=new While($3,$5,@1.first_line, @1.first_column)}
 ;
+/*
+DO-WHILE
+*/
+dowhile
+    :DO statement WHILE PAR_ABRE expresion PAR_CIERRA PUNTO_Y_COMA {$$=new DoWhile($5,$2,@1.first_line, @1.first_column)}
+;
+
 /*
 SWITCH
 */

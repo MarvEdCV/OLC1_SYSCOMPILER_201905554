@@ -14,6 +14,7 @@ export class AsignacionSinDeclaracion extends Instruccion {
     }
     public execute(ambito:Ambito){
         let simbolo = ambito.getVal(this.id)
+        console.log(simbolo?.type)
         //verificamos si la variable ya esta guardada en ese ambito
         if(simbolo!=null){
             //Ejecutamos la expresion que estamos asignando.
@@ -21,6 +22,7 @@ export class AsignacionSinDeclaracion extends Instruccion {
             if(simbolo.type==newsimbol.type){
                 //CHANEVAL
                     simbolo.valor = newsimbol.value
+                    //simbolo.type = newsimbol.type
                     
             }else{
                 throw new Error(this.line, this.column, 'Semantico', 'No se puede asignar el valor a la variable\nya que es de un tipo diferente ya que la variable'+simbolo.id+'es de tipo: '+simbolo.type)

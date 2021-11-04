@@ -19,6 +19,7 @@
     const {While}=require('../Instruccion/While')
     const {Switch}=require('../Instruccion/Switch')
     const {DoWhile}=require('../Instruccion/DoWhile')
+    const {For}=require('../Instruccion/For')
 %}
 
 %lex
@@ -50,6 +51,7 @@
 "switch"                return 'SWITCH';
 "default"               return 'DEFAULT';
 "case"                  return 'CASE';
+"for"                   return 'FOR';
 
 
 //'dijofdjf'+${}'
@@ -141,6 +143,7 @@ inicio
     |while
     |dowhile 
     |switch
+    |for
     |BREAK PUNTO_Y_COMA      {$$=new Break(@1.first_line, @1.first_column)}
     |CONTINUE PUNTO_Y_COMA   {$$=new Continue(@1.first_line, @1.first_column)}
 ;
@@ -178,7 +181,16 @@ DO-WHILE
 dowhile
     :DO statement WHILE PAR_ABRE expresion PAR_CIERRA PUNTO_Y_COMA {$$=new DoWhile($5,$2,@1.first_line, @1.first_column)}
 ;
-
+/*
+FOR
+*/
+for
+    :FOR PAR_ABRE asignacion expresion PUNTO_Y_COMA actualizacion PAR_CIERRA statement {$$=new For($3,$4,$6,$8,@1.first_line, @1.first_column)}   
+;
+actualizacion
+    :expresion                                       {$$=$1}
+    |IDENTIFICADOR IGUAL expresion                   {$$= new AsignacionSinDeclaracion($1,$3,@1.first_line, @1.first_column)}
+;
 /*
 SWITCH
 */

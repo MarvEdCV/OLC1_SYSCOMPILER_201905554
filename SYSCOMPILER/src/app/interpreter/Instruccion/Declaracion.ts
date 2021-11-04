@@ -36,6 +36,7 @@ export class Declaracion extends Instruccion {
         }
         if(typeenum==val.type){
             ambito.setVal(this.id, val.value, val.type, this.line, this.column)
+            
         }else{
             throw new Error(this.line, this.column, 'Semantico', 'No se puede asignar este valor a este tipo de dato')
         }

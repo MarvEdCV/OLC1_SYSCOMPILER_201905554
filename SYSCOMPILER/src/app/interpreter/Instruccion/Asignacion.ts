@@ -22,7 +22,7 @@ export class Asignacion extends Instruccion {
         }else if(this.type.toUpperCase()=="DOUBLE"){
             typeenum = 1;
             for(let idactual of this.ids){
-                ambito.setVal(idactual,0.0,Type.DOUBLE,this.line,this.column)
+                ambito.setVal(idactual,0.0000,Type.DOUBLE,this.line,this.column)
             }
         }else if(this.type.toUpperCase()=="BOOLEAN"){
             typeenum = 2;

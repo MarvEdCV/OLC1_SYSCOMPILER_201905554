@@ -19,9 +19,10 @@ GRAMATICA JISON SYSCOMPILER 201905554
 |`([a-zA-Z])[a-zA-Z0-9_]*	`|Identificador|
 |`[A-Za-z]+["_"0-9A-Za-z]*`|Cadena comilla doble |
 |`[A-Za-z]+['_'0-9A-Za-z]*`|Cadena comilla simple|
+
+
 <div id='terminales'/>
 ## Terminales
-   
    | **NOMBRE** | **SIMBOLO** |
    |------------|---------|
    |`true`     | TRUE|
@@ -82,9 +83,7 @@ GRAMATICA JISON SYSCOMPILER 201905554
 * %start ini
 
 <div id='noterminales'/>
-
 ## No terminales
-
    | **NOMBRE**    |    **NOMBRE**  |    **NOMBRE**   |
    |---------------|----------------|-----------------|
    | `ini`          | `while`    | `expresion `   |
@@ -99,13 +98,10 @@ GRAMATICA JISON SYSCOMPILER 201905554
 
 
 <div id='producciones'/>
-
 ## Producciones
-
 ```typescript
 ini
 	: finalinstrucciones EOF{
-        
 		return $1;
 	}
 ;

@@ -7,8 +7,13 @@ import * as ace from 'ace-builds'; // ace module ..
 import 'ace-builds/src-noconflict/ext-beautify';
 import 'ace-builds/src-noconflict/mode-typescript';
 import 'ace-builds/src-noconflict/theme-tomorrow_night_eighties'; 
-import { Ambito } from './interpreter/Ambito/Ambito';
+import { Ambito, listavar } from './interpreter/Ambito/Ambito';
 import { Metodo } from './interpreter/Instruccion/Metodo';
+import { StartWith } from './interpreter/Instruccion/StartWith';
+import { Error } from './interpreter/Error/Error';
+import { Declaracion } from './interpreter/Instruccion/Declaracion';
+import { Asignacion } from './interpreter/Instruccion/Asignacion';
+import { AsignacionSinDeclaracion } from './interpreter/Instruccion/AsignacionSinDeclaracion';
 const THEME = 'ace/theme/tomorrow_night_eighties';
 const LANG = 'ace/mode/typescript';
 
@@ -25,6 +30,8 @@ export class AppComponent implements OnInit {
   public codeEditor!: ace.Ace.Editor;
   private editorBeautify:any;
   consolelog = "";
+  tabladesimbolos :any=[];
+  tablademetodos :any=[];
 
   ngOnInit(): void {
     this.editorBeautify = ace.require('ace/ext/beautify');
@@ -72,6 +79,8 @@ export class AppComponent implements OnInit {
 
   ejecutar() {
     let entrada = this.codeEditor?.getValue()
+    this.tabladesimbolos=[];
+    this.tablademetodos=[];
     entrada = entrada.toLowerCase();
     console.log("Iniciando Análisis...")
     this.consolelog="Iniciando Análisis";
@@ -81,31 +90,45 @@ export class AppComponent implements OnInit {
     } 
    const ast = parser.parse(entrada)
    console.log(ast)
-   const ambito = new Ambito(null);
+   const ambito = new Ambito(null); 
    try {
     for(const instruccion of ast){
       if(instruccion instanceof Metodo){
         instruccion.execute(ambito);
-      }
+       }
     }
    } catch (error) {
      console.log(error)
      this.consolelog = this.consolelog+error;
    }
     try {
-    
+    let contador =0;
     for(const inst of ast){
+      if(inst instanceof Declaracion || inst instanceof Asignacion || inst instanceof AsignacionSinDeclaracion){
+        inst.execute(ambito); 
+      }
       if(inst instanceof Metodo){
         continue;
       }
-      inst.execute(ambito);
-      this.consolelog = textPrint;
-      
+      if(inst instanceof StartWith){
+        if(contador == 0){
+          const retorno =inst.execute(ambito);
+          this.consolelog = textPrint;
+          contador++;
+        }/*else{
+          throw new Error(0,0, 'Semantico', 'No se puede tener 2 start With')
+        }*/
+      }
+      continue;
     }
     } catch (error) {
       console.log(error)
       this.consolelog = this.consolelog+error;
     }
+   this.tabladesimbolos = listavar;
+   for(const func of ambito.metodos){
+      this.tablademetodos.push(func);
+   }
     this.consolelog = this.consolelog +MensajeError
     this.consolelog= this.consolelog +"\n"+"Análisis Finalizado...";
     console.log("Análisis Finalizado...")

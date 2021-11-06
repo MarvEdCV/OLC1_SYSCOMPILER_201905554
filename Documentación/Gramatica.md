@@ -44,38 +44,38 @@ GRAMATICA JISON SYSCOMPILER 201905554
 |`for`      |FOR|
 |`void`     |VOID|
 |`start`    |START|
-|`with`     |WITH
-|`tolower`  |TOLOWER
-|`toupper`  |TOUPPER
-|`round`    |ROUND
-|`truncate` |TRUNCATE
-|`tostring` |TOSTRING
-|`typeof`   |TYPEOF
-|`(` |                   PAR_ABRE
-|`)` | PAR_CIERRA
-|`{` |   LLAV_ABRE
-|`}` |   LLAV_CIERRA
-|`==`| D_IGUAL
-|`<=`| MENOR_IGUAL
-|`<` | MENOR
-|`>=`| MAYOR_IGUAL
-|`>` | MAYOR
-|`!=`| DIFERENTE
-|`or`| OR
-|`&&`| AND
-|`!` | NOT
-|++| MASMAS
-|--| MENOSMENOS
-|, | COMA
-|`+`	| MAS
-|`-`	| MENOS
-|`*`	| POR
-|`/`	| DIVIDIR
-|`^`	| ELEVAR
-|`%`	| MODULO
-|`=` | IGUAL
-|`;` | PUNTO_Y_COMA
-|`:` | DOS_PUNTOS
+|`with`     |WITH|
+|`tolower`  |TOLOWER|
+|`toupper`  |TOUPPER|
+|`round`    |ROUND|
+|`truncate` |TRUNCATE|
+|`tostring` |TOSTRING|
+|`typeof`   |TYPEOF|
+|`(` |                   PAR_ABRE|
+|`)` | PAR_CIERRA|
+|`{` |   LLAV_ABRE|
+|`}` |   LLAV_CIERRA|
+|`==`| D_IGUAL|
+|`<=`| MENOR_IGUAL|
+|`<` | MENOR|
+|`>=`| MAYOR_IGUAL|
+|`>` | MAYOR|
+|`!=`| DIFERENTE|
+|`or`| OR|
+|`&&`| AND|
+|`!` | NOT|
+|++| MASMAS|
+|--| MENOSMENOS|
+|, | COMA|
+|`+`	| MAS|
+|`-`	| MENOS|
+|`*`	| POR|
+|`/`	| DIVIDIR|
+|`^`	| ELEVAR|
+|`%`	| MODULO|
+|`=` | IGUAL|
+|`;` | PUNTO_Y_COMA|
+|`:` | DOS_PUNTOS|
 
 <div id='inicio'/>
 ##Inicio Gramática

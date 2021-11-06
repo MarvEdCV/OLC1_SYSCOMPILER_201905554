@@ -9,7 +9,7 @@ export class Break extends Instruccion {
         return { type: 'Break', line: this.line, column: this.column }
     }
     public getCodigoAST(): { codigo: string, nombreNodo: string }{
-        return {codigo:'INSTRUCCION',nombreNodo:'INSTRUCCION'}
+        return {codigo:'BREAK',nombreNodo:'BREAK'}
     }
 
 }

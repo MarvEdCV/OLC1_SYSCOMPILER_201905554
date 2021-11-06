@@ -48,6 +48,6 @@ export class Casteos extends Instruccion {
         
     }
     public getCodigoAST(): { codigo: string, nombreNodo: string }{
-        return {codigo:'INSTRUCCION',nombreNodo:'INSTRUCCION'}
+        return {codigo:'CASTEOS',nombreNodo:'CASTEOS'}
     }
 }

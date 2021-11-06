@@ -19,6 +19,6 @@ export class WriteLine extends Instruccion {
         }
     }
     public getCodigoAST(): { codigo: string, nombreNodo: string }{
-        return {codigo:'INSTRUCCION',nombreNodo:'INSTRUCCION'}
+        return {codigo:'WRITELINE',nombreNodo:'WRITELINE'}
     }    
 }

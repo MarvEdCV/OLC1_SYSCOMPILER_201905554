@@ -43,7 +43,7 @@ export class Relacional extends Expresion {
         
     }
     public getCodigoAST(): { codigo: string, nombreNodo: string }{
-        return {codigo:'EXPRESION',nombreNodo:'EXPRESION'}
+        return {codigo:'RELACIONAL',nombreNodo:'RELACIONAL'}
     }
 }
 

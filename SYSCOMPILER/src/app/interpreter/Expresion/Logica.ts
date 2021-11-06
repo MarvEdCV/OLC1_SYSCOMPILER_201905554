@@ -38,7 +38,7 @@ export class Logica extends Expresion {
     
 }
 public getCodigoAST(): { codigo: string, nombreNodo: string }{
-    return {codigo:'EXPRESION',nombreNodo:'EXPRESION'}
+    return {codigo:'LOGICA',nombreNodo:'LOGICA'}
 }
 }
 

@@ -8,6 +8,6 @@ export class Return extends Instruccion {
         return {type:'Return',line:this.line,column:this.column}
     }
     public getCodigoAST(): { codigo: string, nombreNodo: string }{
-        return {codigo:'INSTRUCCION',nombreNodo:'INSTRUCCION'}
+        return {codigo:'RETURN',nombreNodo:'RETURN'}
     }
 }

@@ -3,7 +3,7 @@ import { Instruccion } from "./Instruccion";
 import { Retorno, Type } from "../Expresion/Retorno";
 import { Ambito } from '../Ambito/Ambito';
 import { Error } from "../Error/Error";
-
+export let AstAsignacion="";
 export class Asignacion extends Instruccion {
     private type: string;
     private ids: Array<string>
@@ -43,9 +43,18 @@ export class Asignacion extends Instruccion {
             throw new Error(this.line, this.column, 'Semantico', 'Tipo de dato invalido');
         }
         console.log(ambito.variables)
+        this.getCodigoAST();
 
     }
     public getCodigoAST(): { codigo: string, nombreNodo: string }{
-        return {codigo:'INSTRUCCION',nombreNodo:'INSTRUCCION'}
+        const x = Math.random() * 10000000;
+        let nombreNodoPrincipal = (x < 0 ? Math.ceil(x) : Math.floor(x));
+        const codigo =  `${nombreNodoPrincipal}[label="Asignacion tipo parametro"];
+        nodo1_valor_${nombreNodoPrincipal}[label="Identificadores separados por comas "+"\n"+"${this.ids}"];
+        ${nombreNodoPrincipal} -> nodo1_valor_${nombreNodoPrincipal}
+        `;
+        AstAsignacion = AstAsignacion+codigo+"\n Principal ->"+nombreNodoPrincipal.toString()+";";
+        return {codigo: codigo , nombreNodo: nombreNodoPrincipal.toString() };
+        
     }
 }

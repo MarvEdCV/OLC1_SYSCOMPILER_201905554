@@ -2,6 +2,7 @@ import { Instruccion } from "./Instruccion";
 import { Ambito } from "../Ambito/Ambito";
 import { Error } from "../Error/Error";
 import { Expresion } from "../Expresion/Expresion";
+export let AstStartWith="";
 export class StartWith extends Instruccion {
     constructor(private id: string, private expresiones: Array<Expresion>, line: number, column: number) {
         super(line, column);
@@ -25,8 +26,19 @@ export class StartWith extends Instruccion {
             }            
         }
         method.statment.execute(newEnv);
+        this.getCodigoAST();
     }
     public getCodigoAST(): { codigo: string, nombreNodo: string }{
-        return {codigo:'INSTRUCCION',nombreNodo:'INSTRUCCION'}
+
+        const x = Math.random() * 100009;
+        let nombreNodoPrincipal = (x < 0 ? Math.ceil(x) : Math.floor(x));
+        const codigo =  `${nombreNodoPrincipal}[label="Start_With"];
+        nodo1_valor_${nombreNodoPrincipal}[label="Método de ejecución: "+"\n"+"${this.id}"];
+        
+        ${nombreNodoPrincipal} -> nodo1_valor_${nombreNodoPrincipal}
+       
+        `;
+        AstStartWith = AstStartWith+codigo+"\n Principal ->"+nombreNodoPrincipal.toString()+";";
+        return {codigo:codigo , nombreNodo: nombreNodoPrincipal.toString()};
     }
 }

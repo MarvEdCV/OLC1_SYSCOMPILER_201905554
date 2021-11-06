@@ -1,6 +1,8 @@
 import { Ambito } from "../Ambito/Ambito";
 import { Expresion } from "./Expresion";
 import { Retorno, Type } from './Retorno';
+export let AstLiteral="";
+export let AstLiteralNombre="";
 export class Literal extends Expresion {
 
     constructor(private value: any, private tipo: TipoLiteral, line: number, column: number) {
@@ -28,7 +30,15 @@ export class Literal extends Expresion {
         
     }
     public getCodigoAST(): { codigo: string, nombreNodo: string }{
-        return {codigo:'lit',nombreNodo:'EXPRESION'}
+        const x = Math.random() * 10000000;
+        let nombreNodoPrincipal = (x < 0 ? Math.ceil(x) : Math.floor(x));
+        const cod =  `${nombreNodoPrincipal}[label="Literal"];
+        nodo1_valor_${nombreNodoPrincipal}[label="tipo: "+"${this.tipo} "+"valor: "+"${this.value}"];
+        ${nombreNodoPrincipal} -> nodo1_valor_${nombreNodoPrincipal}
+        `;
+        AstLiteral =cod+"\n";
+        AstLiteralNombre = nombreNodoPrincipal.toString();
+        return {codigo:cod , nombreNodo: nombreNodoPrincipal.toString()  };
     }
 } 
 export enum TipoLiteral {

@@ -57,6 +57,6 @@ export class Switch extends Instruccion {
         console.log(this.Listacase)
     }
     public getCodigoAST(): { codigo: string, nombreNodo: string }{
-        return {codigo:'INSTRUCCION',nombreNodo:'INSTRUCCION'}
+        return {codigo:'SWITCH',nombreNodo:'SWITCH'}
     }
 }

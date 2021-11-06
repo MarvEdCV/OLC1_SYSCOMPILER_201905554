@@ -16,6 +16,6 @@ export class AccesoAmbito extends Expresion {
 
     }
     public getCodigoAST(): { codigo: string, nombreNodo: string }{
-        return {codigo:'EXPRESION',nombreNodo:'EXPRESION'}
+        return {codigo:'ACCESOAMBITO',nombreNodo:'ACCESOAMBITO'}
     }
 }

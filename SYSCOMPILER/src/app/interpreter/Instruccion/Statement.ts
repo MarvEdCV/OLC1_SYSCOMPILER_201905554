@@ -26,6 +26,6 @@ export class Statement extends Instruccion {
         }
     }
     public getCodigoAST(): { codigo: string, nombreNodo: string }{
-        return {codigo:'INSTRUCCION',nombreNodo:'INSTRUCCION'}
+        return {codigo:'STATEMENT',nombreNodo:'STATEMENT'}
     }
 }

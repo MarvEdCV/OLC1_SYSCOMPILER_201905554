@@ -9,7 +9,7 @@ export class Continue extends Instruccion {
         return { type: 'Continue', line: this.line, column: this.column }
     }
     public getCodigoAST(): { codigo: string, nombreNodo: string }{
-        return {codigo:'INSTRUCCION',nombreNodo:'INSTRUCCION'}
+        return {codigo:'CONTINUE',nombreNodo:'CONTINUE'}
     }
 
 }

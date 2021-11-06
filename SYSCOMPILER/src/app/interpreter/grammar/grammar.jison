@@ -102,8 +102,6 @@
 \'[^\']*\'				{ yytext = yytext.substr(1,yyleng-2); return 'CADENA_COMILLAS_SIMPLES';}
 <<EOF>>				    return 'EOF';
 .					    {
-                        /*const er = new error_1.Error(yylloc.first_line,yylloc.first_column,"Léxico",yytext);
-                        listaErrores.ListaErrores.getInstance().push(er);*/
                         console.log(yylloc.first_line, yylloc.first_column,'Lexico',yytext);
                         new Error(yylloc.first_line, yylloc.first_column,'Lexico','Error detectado');                     
                         }
@@ -131,6 +129,7 @@
 
 ini
 	: finalinstrucciones EOF{
+        
 		return $1;
 	}
 ;

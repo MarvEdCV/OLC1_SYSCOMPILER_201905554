@@ -14,5 +14,5 @@ export abstract class Instruccion {
     }
 
     public abstract execute(ambito: Ambito): any;
-    public abstract getCodigoAST():{ codigo: string, nombreNodo: string };
+    public abstract getCodigoAST(ambito:Ambito):{ codigo: string, nombreNodo: string };
 }

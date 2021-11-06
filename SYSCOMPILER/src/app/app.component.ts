@@ -1,5 +1,5 @@
 import { Component,ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MensajeError } from './interpreter/Error/Error';
+import { lista, MensajeError } from './interpreter/Error/Error';
 import {parser} from './interpreter/grammar/grammar.js';
 import { saveAs } from 'file-saver';
 import { textPrint } from './interpreter/Instruccion/WriteLine';
@@ -8,15 +8,17 @@ import 'ace-builds/src-noconflict/ext-beautify';
 import 'ace-builds/src-noconflict/mode-typescript';
 import 'ace-builds/src-noconflict/theme-tomorrow_night_eighties'; 
 import { Ambito, listavar } from './interpreter/Ambito/Ambito';
-import { Metodo } from './interpreter/Instruccion/Metodo';
-import { StartWith } from './interpreter/Instruccion/StartWith';
-import { Error } from './interpreter/Error/Error';
-import { Declaracion } from './interpreter/Instruccion/Declaracion';
-import { Asignacion } from './interpreter/Instruccion/Asignacion';
-import { AsignacionSinDeclaracion } from './interpreter/Instruccion/AsignacionSinDeclaracion';
+import { AstMetodo, Metodo } from './interpreter/Instruccion/Metodo';
+import { AstStartWith, StartWith } from './interpreter/Instruccion/StartWith';
+import { AstDeclaracion, AstDeclaracionNombre, Declaracion } from './interpreter/Instruccion/Declaracion';
+import { Asignacion, AstAsignacion } from './interpreter/Instruccion/Asignacion';
+import { AsignacionSinDeclaracion, AstAsignacionSinDeclaracion } from './interpreter/Instruccion/AsignacionSinDeclaracion';
+
+import { AstLiteral, AstLiteralNombre } from './interpreter/Expresion/Literal';
+//mport * as fs from 'file-system';
+
 const THEME = 'ace/theme/tomorrow_night_eighties';
 const LANG = 'ace/mode/typescript';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -32,6 +34,8 @@ export class AppComponent implements OnInit {
   consolelog = "";
   tabladesimbolos :any=[];
   tablademetodos :any=[];
+  tabladeerrores : any=[];
+  CodGrap= `digraph G { \n Principal [label="AST"];\n`;
 
   ngOnInit(): void {
     this.editorBeautify = ace.require('ace/ext/beautify');
@@ -90,22 +94,30 @@ export class AppComponent implements OnInit {
     } 
    const ast = parser.parse(entrada)
    console.log(ast)
-   const ambito = new Ambito(null); 
+   const ambito = new Ambito(null);
+   
+   
+
+   //EJECUCION PARA PRIMERA VUELTA GUARDAR METODOS;
    try {
     for(const instruccion of ast){
       if(instruccion instanceof Metodo){
         instruccion.execute(ambito);
+        console.log("estoy en metodo");   
        }
     }
    } catch (error) {
      console.log(error)
      this.consolelog = this.consolelog+error;
    }
+
+   //EJECUCION SEGUNDA VUELTA PARA DECLARACIONES, ASIGNACIONES,
     try {
     let contador =0;
     for(const inst of ast){
       if(inst instanceof Declaracion || inst instanceof Asignacion || inst instanceof AsignacionSinDeclaracion){
-        inst.execute(ambito); 
+        inst.execute(ambito);
+        console.log("estoy en declaracion");        
       }
       if(inst instanceof Metodo){
         continue;
@@ -113,11 +125,10 @@ export class AppComponent implements OnInit {
       if(inst instanceof StartWith){
         if(contador == 0){
           const retorno =inst.execute(ambito);
+          console.log("estoy en startwith");   
           this.consolelog = textPrint;
           contador++;
-        }/*else{
-          throw new Error(0,0, 'Semantico', 'No se puede tener 2 start With')
-        }*/
+        }
       }
       continue;
     }
@@ -125,13 +136,33 @@ export class AppComponent implements OnInit {
       console.log(error)
       this.consolelog = this.consolelog+error;
     }
+
+  //IMPRIMIR SIMBOLOS EN TABLA DE SIMBOLOS
    this.tabladesimbolos = listavar;
+
+   //IMPRIMIR FUNCIONES EN TABLA DE SIMBOLOS 
    for(const func of ambito.metodos){
       this.tablademetodos.push(func);
    }
+
     this.consolelog = this.consolelog +MensajeError
+    this.tabladeerrores = lista;
+    console.log(this.tabladeerrores[0]);
     this.consolelog= this.consolelog +"\n"+"Análisis Finalizado...";
     console.log("Análisis Finalizado...")
+    //Ejecucion para graficar AST
+   this.CodGrap = this.CodGrap +"\n"+AstStartWith;
+   this.CodGrap = this.CodGrap +AstDeclaracion;
+   this.CodGrap = this.CodGrap +AstAsignacion;
+   this.CodGrap = this.CodGrap + "\n"+AstAsignacionSinDeclaracion;
+   this.CodGrap = this.CodGrap + "\n"+AstMetodo;
+   this.CodGrap = this.CodGrap + "\n"+AstLiteral;
+    this.CodGrap = this.CodGrap+`}`;
+    console.log(this.CodGrap);
   }
 
+  Generatex(){
+    let ruta = "C:\\Users\\marvi\\OneDrive\\Escritorio\\Segundo semestre 2021\\Compi 1\\Laboratorio\\Proyecto 2\\OLC1_SYSCOMPILER_201905554\\Ast";
+    //fs.FileWriter(ruta+'.dot',this.CodGrap);
+  }
 }

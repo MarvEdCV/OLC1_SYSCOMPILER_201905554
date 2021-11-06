@@ -10,14 +10,13 @@ export class LlamadaMetodo extends Instruccion {
         const method = ambito.GetMethod(this.id);
         if (method == undefined) throw new Error(this.line, this.column, 'Semantico', `Funcion ${this.id} no encontrada`)
         if (this.expresiones.length != method.parametros.length) throw new Error(this.line, this.column, 'Semantico', "Cantidad de parametros incorrecta\nlos ingresados en la llamada son: "+this.expresiones.length+" y tendrian que ser: "+method.parametros.length)
-               
-        //VAlidar tambien que los parametros de los dos sean del mismo tipo.
-        const newEnv = new Ambito(ambito/*.getGlobal()*/);
+        const newEnv = new Ambito(ambito.getGlobal());
         for (let i = 0; i < this.expresiones.length; i++) {
             const value = this.expresiones[i].execute(ambito);
+            
             let x=Number(method.parametros[i][0]);
             let y=Number(value.type)
-            console.log(x==y); 
+            
             if(x==y){
                 newEnv.setVal(method.parametros[i][1], value.value, value.type, this.line, this.column);
             }else{

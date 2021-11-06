@@ -13,7 +13,7 @@ import { AstStartWith, StartWith } from './interpreter/Instruccion/StartWith';
 import { AstDeclaracion, AstDeclaracionNombre, Declaracion } from './interpreter/Instruccion/Declaracion';
 import { Asignacion, AstAsignacion } from './interpreter/Instruccion/Asignacion';
 import { AsignacionSinDeclaracion, AstAsignacionSinDeclaracion } from './interpreter/Instruccion/AsignacionSinDeclaracion';
-
+import {graphviz} from 'd3-graphviz';
 import { AstLiteral, AstLiteralNombre } from './interpreter/Expresion/Literal';
 //mport * as fs from 'file-system';
 
@@ -79,6 +79,12 @@ export class AppComponent implements OnInit {
     contenido = this.codeEditor.getValue();
       const blob = new Blob([contenido], {type: "text/plain;charset=utf-8"});
       saveAs(blob, "File.sc");
+  }
+  SaveGraph(){
+    var contenido:string;
+    contenido = this.codeEditor.getValue();
+      const blob = new Blob([contenido], {type: "text/plain;charset=utf-8"});
+      saveAs(blob, "Graph.dot");
   }
 
   ejecutar() {
@@ -157,12 +163,11 @@ export class AppComponent implements OnInit {
    this.CodGrap = this.CodGrap + "\n"+AstAsignacionSinDeclaracion;
    this.CodGrap = this.CodGrap + "\n"+AstMetodo;
    this.CodGrap = this.CodGrap + "\n"+AstLiteral;
-    this.CodGrap = this.CodGrap+`}`;
+   this.CodGrap = this.CodGrap+`}`;
     console.log(this.CodGrap);
   }
 
   Generatex(){
-    let ruta = "C:\\Users\\marvi\\OneDrive\\Escritorio\\Segundo semestre 2021\\Compi 1\\Laboratorio\\Proyecto 2\\OLC1_SYSCOMPILER_201905554\\Ast";
-    //fs.FileWriter(ruta+'.dot',this.CodGrap);
+   graphviz('#graph').renderDot('digraph {a -> b}');
   }
 }

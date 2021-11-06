@@ -24,6 +24,7 @@
     const {Metodo}=require('../Instruccion/Metodo')
     const {LlamadaMetodo}=require('../Instruccion/LlamadaMetodo')
     const {StartWith}=require('../Instruccion/StartWith')
+    const {LowerOrUpper}=require('../Instruccion/LowerOrUpper')
 %}
 
 %lex
@@ -59,6 +60,8 @@
 "void"                  return 'VOID';
 "start"                 return 'START';
 "with"                  return 'WITH';
+"tolower"               return 'TOLOWER';
+"toupper"               return 'TOUPPER';
 
 
 //'dijofdjf'+${}'
@@ -279,6 +282,7 @@ asignacion
 declaracion 
     :tiposDatos ListaVariables PUNTO_Y_COMA                       {$$= new Asignacion($1,$2,@1.first_line, @1.first_column)}
 ;
+
 /*
 INCREMENTO Y DECREMENTO
 */
@@ -313,11 +317,14 @@ expresion
     |expresion AND expresion            {$$= new Logica($1,$3,TipoLogica.AND, @1.first_line, @1.first_column)}
     |expresion OR expresion             {$$= new Logica($1,$3,TipoLogica.OR, @1.first_line, @1.first_column)}
     |NOT expresion                      {$$= new Logica(null,$2,TipoLogica.NOT, @1.first_line, @1.first_column)}
+
     |PAR_ABRE expresion PAR_CIERRA      {$$= $2}
     //Llamada funcion
     |llamadametodo
     //Casteos
     |PAR_ABRE tiposDatos PAR_CIERRA expresion {$$ = new Casteos($2,$4,@1.first_line, @1.first_column)}
+    |TOLOWER PAR_ABRE expresion PAR_CIERRA      {$$=new LowerOrUpper("tolower",$3,@1.first_line, @1.first_column)}
+    |TOUPPER PAR_ABRE expresion PAR_CIERRA      {$$=new LowerOrUpper("toupper",$3,@1.first_line, @1.first_column)}
     //incrementos y decrementos
     |incrementos                        {$$=$1}
 	|ENTERO	                            {$$= new Literal($1,TipoLiteral.INT, @1.first_line, @1.first_column)}

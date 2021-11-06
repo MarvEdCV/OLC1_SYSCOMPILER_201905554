@@ -23,6 +23,7 @@
     const {Error}=require('../Error/Error')
     const {Metodo}=require('../Instruccion/Metodo')
     const {LlamadaMetodo}=require('../Instruccion/LlamadaMetodo')
+    const {StartWith}=require('../Instruccion/StartWith')
 %}
 
 %lex
@@ -56,7 +57,8 @@
 "case"                  return 'CASE';
 "for"                   return 'FOR';
 "void"                  return 'VOID';
-
+"start"                 return 'START';
+"with"                  return 'WITH';
 
 
 //'dijofdjf'+${}'
@@ -128,11 +130,13 @@
 %% 
 
 ini
-	: instrucciones EOF{
+	: finalinstrucciones EOF{
 		return $1;
 	}
 ;
-
+finalinstrucciones
+    :instrucciones startwith {$1.push($2);}
+;
 instrucciones
     :instrucciones inicio 
         { $1.push($2); $$ = $1; }
@@ -151,6 +155,7 @@ inicio
     |switch
     |for
     |metodo
+    |startwith
     |llamadametodo PUNTO_Y_COMA 
     |BREAK PUNTO_Y_COMA      {$$=new Break(@1.first_line, @1.first_column)}
     |CONTINUE PUNTO_Y_COMA   {$$=new Continue(@1.first_line, @1.first_column)}
@@ -176,6 +181,10 @@ else
     |ELSE if            {$$=$2}
     |                   {$$=null}
     
+;
+startwith
+    :START WITH IDENTIFICADOR  PAR_ABRE PAR_CIERRA PUNTO_Y_COMA              {$$=new StartWith($3,[],@1.first_line, @1.first_column)}
+    |START WITH IDENTIFICADOR PAR_ABRE ListaExpr PAR_CIERRA PUNTO_Y_COMA     {$$=new StartWith($3,$5,@1.first_line, @1.first_column)} 
 ;
 /*
 WHILE

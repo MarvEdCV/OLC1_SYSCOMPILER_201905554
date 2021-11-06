@@ -59,12 +59,52 @@
         <textarea type="text" [(ngModel)]="consolelog" name="consolelog"></textarea>
       </td>
     </tr>
+    
   </table>
-  
   <div style="display: flex; width: 100%; justify-content: center; padding-top: 15px;">
     <button  type="button" class="btn btn-secondary"
       (click)="ejecutar()">Ejecutar</button>
   </div>
+  <div class="row my-5">
+    <div class="col-12">
+      <p class="mt-2 mb-1 text-white subtitulo">Tabla de símbolos</p>
+      <table class="table table-striped table-dark text-center">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Identificador</th>
+            <th scope="col">Tipo símbolo</th>
+            <th scope="col">Tipo dato</th>
+            <th scope="col">Entorno</th>
+            <th scope="col">Línea</th>
+            <th scope="col">Columna</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of tabladesimbolos; index as i">
+            <th scope="row">{{i+1}}</th>
+            <td>{{item[1].id}}</td>
+            <td>Variable</td>
+            <td>{{item[1].type}}</td>
+            <td>Entorno</td>
+            <td>{{item[1].line}}</td>
+            <td>{{item[1].column}}</td>
+          </tr>
+          <tr *ngFor="let item of tablademetodos; index as i">
+            <th scope="row">{{i+1}}</th>
+            <td>{{item[1].id}}</td>
+            <td>Metodo</td>
+            <td>Void</td>
+            <td>Entorno</td>
+            <td>{{item[1].line}}</td>
+            <td>{{item[1].column}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  
 </body>
 
 </html>

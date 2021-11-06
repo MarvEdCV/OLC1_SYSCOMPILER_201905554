@@ -1,5 +1,4 @@
 import { Ambito } from "../Ambito/Ambito";
-import { ListaErrores } from "../Error/ListaErrores";
 import { Expresion } from "../Expresion/Expresion";
 import { Instruccion } from "./Instruccion";
 import { Error } from "../Error/Error";

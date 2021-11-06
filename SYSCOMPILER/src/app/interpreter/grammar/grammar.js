@@ -470,7 +470,7 @@ parse: function parse(input) {
     const {Literal,TipoLiteral} = require('../Expresion/Literal')
     const {Logica,TipoLogica} = require('../Expresion/Logica')
     const error_1 = require('../Error/Error')
-    const listaErrores = require('../Error/ListaErrores')
+        
     const {AccesoAmbito} = require('../Expresion/AccesoAmbito')
     const {Declaracion} = require('../Instruccion/Declaracion')
     const {WriteLine} = require('../Instruccion/WriteLine')

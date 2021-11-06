@@ -45,4 +45,7 @@ export class Asignacion extends Instruccion {
         console.log(ambito.variables)
 
     }
+    public getCodigoAST(): { codigo: string, nombreNodo: string }{
+        return {codigo:'INSTRUCCION',nombreNodo:'INSTRUCCION'}
+    }
 }

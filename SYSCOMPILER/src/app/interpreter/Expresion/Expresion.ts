@@ -9,7 +9,7 @@ export abstract class Expresion {
     }
 
     public abstract execute(ambito:Ambito): Retorno;
-
+    public abstract getCodigoAST(): { codigo: string, nombreNodo: string };
 
 public tipoDominanteSuma(tipo1: Type, tipo2: Type): Type {
         return tiposuma[tipo1][tipo2];

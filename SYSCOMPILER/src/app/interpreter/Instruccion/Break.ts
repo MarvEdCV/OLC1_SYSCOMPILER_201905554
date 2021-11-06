@@ -8,5 +8,8 @@ export class Break extends Instruccion {
     public execute(ambito: Ambito) {
         return { type: 'Break', line: this.line, column: this.column }
     }
+    public getCodigoAST(): { codigo: string, nombreNodo: string }{
+        return {codigo:'INSTRUCCION',nombreNodo:'INSTRUCCION'}
+    }
 
 }

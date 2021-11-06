@@ -27,4 +27,7 @@ export class While extends Instruccion {
             value = this.condicion.execute(ambito)
         }
     }
+    public getCodigoAST(): { codigo: string, nombreNodo: string }{
+        return {codigo:'INSTRUCCION',nombreNodo:'INSTRUCCION'}
+    }
 }

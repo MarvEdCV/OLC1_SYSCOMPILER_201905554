@@ -43,4 +43,18 @@ export class Declaracion extends Instruccion {
         console.log(ambito.variables)
         
     }
+    public getCodigoAST():{ codigo: string, nombreNodo: string }{
+        const codExp: { codigo: string, nombreNodo: string } = this.value.getCodigoAST();
+        const x = Math.random() * 10000000;
+        let nombreNodoPrincipal = (x < 0 ? Math.ceil(x) : Math.floor(x));
+        const codigo =  `${nombreNodoPrincipal}[label="Asignacion"];
+        nodo1_valor${nombreNodoPrincipal}[label="variable"]; 
+        nodo1_valor_${nombreNodoPrincipal}[label="${this.id}"];
+        ${codExp.codigo}
+        nodo1_valor${nombreNodoPrincipal} -> nodo1_valor_${nombreNodoPrincipal};
+        ${nombreNodoPrincipal} -> nodo1_valor${nombreNodoPrincipal};
+        ${nombreNodoPrincipal} -> ${codExp.nombreNodo};
+        `;
+        return { codigo, nombreNodo: nombreNodoPrincipal.toString() };
+    } 
 }

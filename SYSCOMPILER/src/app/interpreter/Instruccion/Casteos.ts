@@ -47,4 +47,7 @@ export class Casteos extends Instruccion {
             throw new Error(this.line, this.column, 'Semantico', 'No se puede realizar este casteo de tipo: '+expresion.type+' a '+castType);
         
     }
+    public getCodigoAST(): { codigo: string, nombreNodo: string }{
+        return {codigo:'INSTRUCCION',nombreNodo:'INSTRUCCION'}
+    }
 }

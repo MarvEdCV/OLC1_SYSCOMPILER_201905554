@@ -15,4 +15,7 @@ export class AccesoAmbito extends Expresion {
         throw new Error(this.line, this.column, 'Semantico', 'No se encuentra la variable: ' + this.id)
 
     }
+    public getCodigoAST(): { codigo: string, nombreNodo: string }{
+        return {codigo:'EXPRESION',nombreNodo:'EXPRESION'}
+    }
 }

@@ -27,4 +27,7 @@ export class IncrementoDecremento extends Instruccion {
             throw new Error(this.line, this.column, 'Semantico', 'No se encuentra la variable '+this.id+' o no se tiene acceso en el ambito');
         
     }
+    public getCodigoAST(): { codigo: string, nombreNodo: string }{
+        return {codigo:'INSTRUCCION',nombreNodo:'INSTRUCCION'}
+    }
 }

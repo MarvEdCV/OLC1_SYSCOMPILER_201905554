@@ -25,4 +25,7 @@ export class LlamadaMetodo extends Instruccion {
         }
         method.statment.execute(newEnv);
     }
+    public getCodigoAST(): { codigo: string, nombreNodo: string }{
+        return {codigo:'INSTRUCCION',nombreNodo:'INSTRUCCION'}
+    }
 }

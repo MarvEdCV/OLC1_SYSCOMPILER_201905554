@@ -151,6 +151,9 @@ export class Aritmetica extends Expresion {
         }
     return {value: null, type: Type.BOOLEAN}
     }
+    public getCodigoAST(): { codigo: string, nombreNodo: string }{
+        return {codigo:'EXPRESION',nombreNodo:'EXPRESION'}
+    }
 }
 
 export enum TipoAritmetica {

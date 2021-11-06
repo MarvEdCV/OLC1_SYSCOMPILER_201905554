@@ -9,4 +9,7 @@ export class Metodo extends Instruccion {
     public execute(ambito: Ambito): any {
         ambito.SaveMethod(this.id,this)
     }
+    public getCodigoAST(): { codigo: string, nombreNodo: string }{
+        return {codigo:'INSTRUCCION',nombreNodo:'INSTRUCCION'}
+    }
 }

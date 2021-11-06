@@ -8,5 +8,8 @@ export class Continue extends Instruccion {
     public execute(ambito: Ambito) {
         return { type: 'Continue', line: this.line, column: this.column }
     }
+    public getCodigoAST(): { codigo: string, nombreNodo: string }{
+        return {codigo:'INSTRUCCION',nombreNodo:'INSTRUCCION'}
+    }
 
 }

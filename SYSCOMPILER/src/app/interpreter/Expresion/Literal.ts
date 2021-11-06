@@ -27,6 +27,9 @@ export class Literal extends Expresion {
         }
         
     }
+    public getCodigoAST(): { codigo: string, nombreNodo: string }{
+        return {codigo:'lit',nombreNodo:'EXPRESION'}
+    }
 } 
 export enum TipoLiteral {
     INT = 0,

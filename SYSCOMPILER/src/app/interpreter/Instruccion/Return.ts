@@ -7,4 +7,7 @@ export class Return extends Instruccion {
     public execute(ambito:Ambito){
         return {type:'Return',line:this.line,column:this.column}
     }
+    public getCodigoAST(): { codigo: string, nombreNodo: string }{
+        return {codigo:'INSTRUCCION',nombreNodo:'INSTRUCCION'}
+    }
 }

@@ -23,5 +23,8 @@ export class DoWhile extends Instruccion {
     value = this.condicion.execute(ambito)
     }while(value.value);
     }
+    public getCodigoAST(): { codigo: string, nombreNodo: string }{
+        return {codigo:'INSTRUCCION',nombreNodo:'INSTRUCCION'}
+    }
 }
     

@@ -34,4 +34,7 @@ export class For extends Instruccion {
           this.actualizacion.execute(ambito); 
     }
 }
+public getCodigoAST(): { codigo: string, nombreNodo: string }{
+    return {codigo:'INSTRUCCION',nombreNodo:'INSTRUCCION'}
+}
 }

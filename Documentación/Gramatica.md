@@ -9,7 +9,9 @@ GRAMATICA JISON SYSCOMPILER 201905554
 - [Producciones con su descripción](#producciones)
 
 <div id='expresiones'/>
-## Expresiones Regulares
+
+## ExpresionesRegulares
+
 |**EXPRESION REGULAR**|**NOMBRE**|
 |---------|----------------------|
 | `"//".*`|Comentario unilínea |
@@ -19,7 +21,9 @@ GRAMATICA JISON SYSCOMPILER 201905554
 |`([a-zA-Z])[a-zA-Z0-9_]*	`|Identificador|
 |`[A-Za-z]+["_"0-9A-Za-z]*`|Cadena comilla doble |
 |`[A-Za-z]+['_'0-9A-Za-z]*`|Cadena comilla simple|
+
 <div id='terminales'/>
+
 ## Terminales
    
    | **NOMBRE** | **SIMBOLO** |
@@ -78,7 +82,9 @@ GRAMATICA JISON SYSCOMPILER 201905554
 |`:` | DOS_PUNTOS|
 
 <div id='inicio'/>
-##Inicio Gramática
+
+## Inicio Gramática
+
 * %start ini
 
 <div id='noterminales'/>

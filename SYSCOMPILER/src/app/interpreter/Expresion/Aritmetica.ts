@@ -59,7 +59,7 @@ export class Aritmetica extends Expresion {
                 else if(rightValue.type==Type.CHAR){
                     return{value:(leftValue.value-rightValue.value.charCodeAt()),type: Type.INT}
                 }
-                return { value: (leftValue.value - rightValue.value), type: Type.DOUBLE };
+                return { value: (leftValue.value - rightValue.value), type: Type.INT };
             }
              else {
                 throw new Error(this.line, this.column, 'Semantico', 'No se puede operar: ' + leftValue.type + ' CON ' + rightValue.type);

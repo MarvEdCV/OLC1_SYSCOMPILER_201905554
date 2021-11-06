@@ -14,7 +14,7 @@ export class AsignacionSinDeclaracion extends Instruccion {
     }
     public execute(ambito:Ambito){
         let simbolo = ambito.getVal(this.id)
-        console.log(simbolo?.type)
+       
         //verificamos si la variable ya esta guardada en ese ambito
         if(simbolo!=null){
             //Ejecutamos la expresion que estamos asignando.

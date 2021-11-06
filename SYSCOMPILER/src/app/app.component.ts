@@ -15,6 +15,7 @@ import { Asignacion, AstAsignacion } from './interpreter/Instruccion/Asignacion'
 import { AsignacionSinDeclaracion, AstAsignacionSinDeclaracion } from './interpreter/Instruccion/AsignacionSinDeclaracion';
 import {graphviz} from 'd3-graphviz';
 import { AstLiteral, AstLiteralNombre } from './interpreter/Expresion/Literal';
+import { ThrowStmt } from '@angular/compiler';
 //mport * as fs from 'file-system';
 
 const THEME = 'ace/theme/tomorrow_night_eighties';
@@ -82,7 +83,7 @@ export class AppComponent implements OnInit {
   }
   SaveGraph(){
     var contenido:string;
-    contenido = this.codeEditor.getValue();
+    contenido = this.CodGrap;
       const blob = new Blob([contenido], {type: "text/plain;charset=utf-8"});
       saveAs(blob, "Graph.dot");
   }
@@ -91,6 +92,7 @@ export class AppComponent implements OnInit {
     let entrada = this.codeEditor?.getValue()
     this.tabladesimbolos=[];
     this.tablademetodos=[];
+    this.tabladeerrores=[];
     entrada = entrada.toLowerCase();
     console.log("Iniciando Análisis...")
     this.consolelog="Iniciando Análisis";
@@ -99,7 +101,7 @@ export class AppComponent implements OnInit {
       return
     } 
    const ast = parser.parse(entrada)
-   console.log(ast)
+   //console.log(ast)
    const ambito = new Ambito(null);
    
    
@@ -108,8 +110,7 @@ export class AppComponent implements OnInit {
    try {
     for(const instruccion of ast){
       if(instruccion instanceof Metodo){
-        instruccion.execute(ambito);
-        console.log("estoy en metodo");   
+        instruccion.execute(ambito);   
        }
     }
    } catch (error) {
@@ -131,7 +132,7 @@ export class AppComponent implements OnInit {
       if(inst instanceof StartWith){
         if(contador == 0){
           const retorno =inst.execute(ambito);
-          console.log("estoy en startwith");   
+           
           this.consolelog = textPrint;
           contador++;
         }
@@ -153,9 +154,8 @@ export class AppComponent implements OnInit {
 
     this.consolelog = this.consolelog +MensajeError
     this.tabladeerrores = lista;
-    console.log(this.tabladeerrores[0]);
     this.consolelog= this.consolelog +"\n"+"Análisis Finalizado...";
-    console.log("Análisis Finalizado...")
+    
     //Ejecucion para graficar AST
    this.CodGrap = this.CodGrap +"\n"+AstStartWith;
    this.CodGrap = this.CodGrap +AstDeclaracion;
@@ -164,7 +164,8 @@ export class AppComponent implements OnInit {
    this.CodGrap = this.CodGrap + "\n"+AstMetodo;
    this.CodGrap = this.CodGrap + "\n"+AstLiteral;
    this.CodGrap = this.CodGrap+`}`;
-    console.log(this.CodGrap);
+   console.log(this.CodGrap);
+   console.log("Análisis Finalizado...")
   }
 
   Generatex(){

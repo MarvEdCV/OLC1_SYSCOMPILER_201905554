@@ -62,6 +62,10 @@
 "with"                  return 'WITH';
 "tolower"               return 'TOLOWER';
 "toupper"               return 'TOUPPER';
+"round"                 return 'ROUND';
+"truncate"              return 'TRUNCATE';
+"tostring"              return 'TOSTRING';
+"typeof"                return 'TYPEOF';
 
 
 //'dijofdjf'+${}'
@@ -325,6 +329,10 @@ expresion
     |PAR_ABRE tiposDatos PAR_CIERRA expresion {$$ = new Casteos($2,$4,@1.first_line, @1.first_column)}
     |TOLOWER PAR_ABRE expresion PAR_CIERRA      {$$=new LowerOrUpper("tolower",$3,@1.first_line, @1.first_column)}
     |TOUPPER PAR_ABRE expresion PAR_CIERRA      {$$=new LowerOrUpper("toupper",$3,@1.first_line, @1.first_column)}
+    |TRUNCATE PAR_ABRE expresion PAR_CIERRA      {$$=new LowerOrUpper("truncate",$3,@1.first_line, @1.first_column)}
+    |ROUND PAR_ABRE expresion PAR_CIERRA      {$$=new LowerOrUpper("round",$3,@1.first_line, @1.first_column)}
+    |TYPEOF PAR_ABRE expresion PAR_CIERRA      {$$=new LowerOrUpper("typeof",$3,@1.first_line, @1.first_column)}
+    |TOSTRING PAR_ABRE expresion PAR_CIERRA      {$$=new LowerOrUpper("tostring",$3,@1.first_line, @1.first_column)}
     //incrementos y decrementos
     |incrementos                        {$$=$1}
 	|ENTERO	                            {$$= new Literal($1,TipoLiteral.INT, @1.first_line, @1.first_column)}

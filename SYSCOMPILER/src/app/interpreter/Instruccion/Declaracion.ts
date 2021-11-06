@@ -46,7 +46,7 @@ export class Declaracion extends Instruccion {
         }else{
             throw new Error(this.line, this.column, 'Semantico', 'No se puede asignar este valor a este tipo de dato')
         }
-        console.log(ambito.variables)
+        //console.log(ambito.variables)
         this.getCodigoAST();
         
     }
